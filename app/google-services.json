@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "73310007844",
+    "firebase_url": "https://whatson-14de1.firebaseio.com",
+    "project_id": "whatson-14de1",
+    "storage_bucket": "whatson-14de1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73310007844:android:4907a4ba1d7966a7",
+        "android_client_info": {
+          "package_name": "comp5216.sydney.edu.au.whatson"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "73310007844-fs957pab817j2pucndc4bisit6k038dr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "comp5216.sydney.edu.au.whatson",
+            "certificate_hash": "8c574964654af41c4004ee630488a1990cb71c1c"
+          }
+        },
+        {
+          "client_id": "73310007844-van5phbo9hplk6bh49uhe73covtnglkk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTKHaPDCKrezQa-tNTOrMbRjDOmmzPI40"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "73310007844-van5phbo9hplk6bh49uhe73covtnglkk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
