@@ -21,7 +21,18 @@
         <activity
             android:name=".activities.EventsFeedActivity"
             android:label="@string/title_activity_events_feed"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activities.settings.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".activities.EventsFeedActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="xyz.whatson.android.activities.EventsFeedActivity" />
+        </activity>
+        <activity
+            android:name=".activities.ViewEventActivity"
+            android:label="@string/title_activity_view_event"></activity>
     </application>
 
 </manifest>

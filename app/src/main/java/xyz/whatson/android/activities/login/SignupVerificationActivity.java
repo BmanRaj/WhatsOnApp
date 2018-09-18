@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import xyz.whatson.android.R;
+import xyz.whatson.android.activities.EventsFeedActivity;
 
 public class SignupVerificationActivity extends AppCompatActivity {
 
@@ -28,7 +26,7 @@ public class SignupVerificationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+        setContentView(R.layout.activity_signup_verification);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -52,7 +50,9 @@ public class SignupVerificationActivity extends AppCompatActivity {
     private void loadUserInformation() {
         final FirebaseUser user = mAuth.getCurrentUser();
         if (user.isEmailVerified()) {
-            textView.setText("Email Verified");
+            // Go to the Events Feed
+            Intent intent = new Intent(this, EventsFeedActivity.class);
+            startActivity(intent);
         } else {
             textView.setText("Email Not Verified (Click to Verify)");
             textView.setOnClickListener(new View.OnClickListener() {
@@ -69,28 +69,5 @@ public class SignupVerificationActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.menuLogout:
-
-                FirebaseAuth.getInstance().signOut();
-                finish();
-                startActivity(new Intent(this, LoginActivity.class));
-
-                break;
-        }
-
-        return true;
-    }
 }
