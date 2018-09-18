@@ -14,8 +14,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import xyz.whatson.android.R;
+import xyz.whatson.android.activities.EventsFeedActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -73,10 +75,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
-                        finish();
-                        Intent intent = new Intent(LoginActivity.this, SignupVerificationActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+
+                        final FirebaseUser user = mAuth.getCurrentUser();
+                        if (user.isEmailVerified()) {
+                            finish();
+                            Intent intent = new Intent(LoginActivity.this, EventsFeedActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        } else {
+                            finish();
+                            Intent intent = new Intent(LoginActivity.this, SignupVerificationActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+
                     } else {
                         Toast.makeText(getApplicationContext(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }

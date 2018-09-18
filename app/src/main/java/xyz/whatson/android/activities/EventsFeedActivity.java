@@ -1,6 +1,8 @@
 package xyz.whatson.android.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,16 +42,35 @@ public class EventsFeedActivity extends AppCompatActivity
     private EventAdapter adapter;
     private List<Event> eventList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*
-            Initialises the activity's layout
+            Decide if we need to redirect the user to the login screen.
+            Else, proceed with creating this activity.
+         */
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            // User is signed out
+            Intent i = new Intent(this, LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        }
+        // TODO: check if the user is logged in, but has not yet verified their email, and ask them to verify.
 
+
+
+
+        /*
+            Initialises the activity's layout
         */
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_feed);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(R.string.title_activity_events_feed);
+        // https://stackoverflow.com/a/24616650
 
 
         // Maps the floating 'Add Event Button' to the create event activity.
@@ -112,6 +134,21 @@ public class EventsFeedActivity extends AppCompatActivity
         adapter = new EventAdapter(this, eventList);
         recyclerView.setAdapter(adapter);
         prepareEvents();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Recheck if the user is logged in, when returning to this activity.
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            // User is signed out
+            Intent i = new Intent(this, LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        }
     }
 
     private void prepareEvents() {
@@ -181,6 +218,7 @@ public class EventsFeedActivity extends AppCompatActivity
             // Go to the Settings Page
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_logout) {
+            // Sign out
             FirebaseAuth.getInstance().signOut();
             finish();
             startActivity(new Intent(this, LoginActivity.class));
