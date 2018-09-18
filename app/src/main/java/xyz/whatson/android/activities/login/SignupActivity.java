@@ -1,4 +1,4 @@
-package comp5216.sydney.edu.au.whatson;
+package xyz.whatson.android.activities.login;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -16,7 +16,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class SignUp extends AppCompatActivity implements View.OnClickListener {
+import xyz.whatson.android.R;
+import xyz.whatson.android.model.User;
+
+public class SignupActivity extends AppCompatActivity implements View.OnClickListener {
 
     ProgressBar progressBar;
     private EditText editTextName, editTextEmail, editTextPassword;
@@ -26,7 +29,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_signup);
 
         editTextName = findViewById(R.id.etName);
         editTextEmail = findViewById(R.id.etEmail);
@@ -46,7 +49,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
         if (mAuth.getCurrentUser() != null) {
             finish();
-            startActivity(new Intent(this, ProfileActivity.class));
+            startActivity(new Intent(this, SignupVerificationActivity.class));
         }
     }
 
@@ -108,16 +111,16 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     progressBar.setVisibility(View.GONE);
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(SignUp.this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SignupActivity.this, getString(R.string.registration_success), Toast.LENGTH_LONG).show();
 
                                     } else {
-                                        Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
 
                         } else {
-                            Toast.makeText(SignUp.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignupActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -133,7 +136,7 @@ public class SignUp extends AppCompatActivity implements View.OnClickListener {
 
             case R.id.textViewLogin:
                 finish();
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 break;
 
         }

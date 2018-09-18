@@ -1,4 +1,4 @@
-package comp5216.sydney.edu.au.whatson;
+package xyz.whatson.android;
 
 import org.junit.Test;
 

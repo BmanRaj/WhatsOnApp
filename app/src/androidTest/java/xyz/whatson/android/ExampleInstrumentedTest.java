@@ -1,4 +1,4 @@
-package comp5216.sydney.edu.au.whatson;
+package xyz.whatson.android;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("comp5216.sydney.edu.au.whatson", appContext.getPackageName());
+        assertEquals("xyz.whatson.android", appContext.getPackageName());
     }
 }

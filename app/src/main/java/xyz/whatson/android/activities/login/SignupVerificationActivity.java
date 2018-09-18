@@ -1,4 +1,4 @@
-package comp5216.sydney.edu.au.whatson;
+package xyz.whatson.android.activities.login;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -17,7 +17,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class ProfileActivity extends AppCompatActivity {
+import xyz.whatson.android.R;
+
+public class SignupVerificationActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     TextView textView;
@@ -43,7 +45,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onStart();
         if (mAuth.getCurrentUser() == null) {
             finish();
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
     }
 
@@ -59,7 +61,7 @@ public class ProfileActivity extends AppCompatActivity {
                     user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(ProfileActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupVerificationActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -84,7 +86,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                 FirebaseAuth.getInstance().signOut();
                 finish();
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, LoginActivity.class));
 
                 break;
         }

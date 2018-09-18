@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:73310007844:android:4907a4ba1d7966a7",
         "android_client_info": {
-          "package_name": "comp5216.sydney.edu.au.whatson"
+          "package_name": "xyz.whatson.android"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "73310007844-fs957pab817j2pucndc4bisit6k038dr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "comp5216.sydney.edu.au.whatson",
+            "package_name": "xyz.whatson.android",
             "certificate_hash": "8c574964654af41c4004ee630488a1990cb71c1c"
           }
         },

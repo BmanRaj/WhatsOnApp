@@ -1,4 +1,4 @@
-package comp5216.sydney.edu.au.whatson;
+package xyz.whatson.android.activities.login;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -15,7 +15,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+import xyz.whatson.android.R;
+
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     FirebaseAuth mAuth;
     EditText editTextEmail, editTextPassword;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
                         finish();
-                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, SignupVerificationActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                     } else {
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if (mAuth.getCurrentUser() != null) {
             finish();
-            startActivity(new Intent(this, ProfileActivity.class));
+            startActivity(new Intent(this, SignupVerificationActivity.class));
         }
     }
 
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.btnGoToRegister:
                 finish();
-                startActivity(new Intent(this, SignUp.class));
+                startActivity(new Intent(this, SignupActivity.class));
                 break;
 
             case R.id.btnLogin:
