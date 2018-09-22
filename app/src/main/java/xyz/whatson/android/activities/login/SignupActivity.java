@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     ProgressBar progressBar;
     private EditText editTextName, editTextEmail, editTextPassword;
+    private CheckBox checkBoxArt, checkBoxCulture, checkBoxSports, checkBoxMusic, checkBoxTech, checkBoxScience, checkBoxRecreation, checkBoxEducation;
 
     private FirebaseAuth mAuth;
 
@@ -34,6 +36,14 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         editTextName = findViewById(R.id.etName);
         editTextEmail = findViewById(R.id.etEmail);
         editTextPassword = findViewById(R.id.etPassword);
+        checkBoxArt = findViewById(R.id.checkBoxArt);
+        checkBoxCulture = findViewById(R.id.checkBoxCulture);
+        checkBoxSports = findViewById(R.id.checkBoxSports);
+        checkBoxMusic = findViewById(R.id.checkBoxMusic);
+        checkBoxTech = findViewById(R.id.checkBoxTech);
+        checkBoxScience = findViewById(R.id.checkBoxScience);
+        checkBoxEducation = findViewById(R.id.checkBoxEducation);
+        checkBoxRecreation = findViewById(R.id.checkBoxRecreation);
         progressBar = findViewById(R.id.progressbar);
         progressBar.setVisibility(View.GONE);
 
@@ -56,6 +66,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private void registerUser() {
         final String name = editTextName.getText().toString().trim();
         final String email = editTextEmail.getText().toString().trim();
+        final String Art;
+        final String Culture;
+        final String Sports;
+        final String Music;
+        final String Tech;
+        final String Science;
+        final String Recreation;
+        final String Education;
+
         String password = editTextPassword.getText().toString().trim();
 
         if (name.isEmpty()) {
@@ -88,7 +107,61 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
+        if (checkBoxArt.isChecked()) {
+            Art = "true";
+        }
+            else {
+                Art = "false";
+            }
 
+        if (checkBoxCulture.isChecked()) {
+            Culture = "true";
+        }
+        else {
+            Culture = "false";
+        }
+
+        if (checkBoxSports.isChecked()) {
+            Sports = "true";
+        }
+        else {
+            Sports = "false";
+        }
+
+        if (checkBoxMusic.isChecked()) {
+            Music = "true";
+        }
+        else {
+            Music = "false";
+        }
+
+        if (checkBoxTech.isChecked()) {
+            Tech = "true";
+        }
+        else {
+            Tech = "false";
+        }
+
+        if (checkBoxScience.isChecked()) {
+            Science = "true";
+        }
+        else {
+            Science = "false";
+        }
+
+        if (checkBoxEducation.isChecked()) {
+            Education = "true";
+        }
+        else {
+            Education = "false";
+        }
+
+        if (checkBoxRecreation.isChecked()) {
+            Recreation = "true";
+        }
+        else {
+            Recreation = "false";
+        }
 
 
         progressBar.setVisibility(View.VISIBLE);
@@ -101,7 +174,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
                             User user = new User(
                                     name,
-                                    email
+                                    email,
+                                    Art,
+                                    Culture,
+                                    Sports,
+                                    Music,
+                                    Tech,
+                                    Science,
+                                    Recreation,
+                                    Education
                             );
 
                             FirebaseDatabase.getInstance().getReference("Users")

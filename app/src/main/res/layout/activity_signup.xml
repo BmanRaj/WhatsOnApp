@@ -12,7 +12,7 @@
         android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="177dp"
+        android:layout_marginBottom="111dp"
         android:text="Sign Up" />
 
     <EditText
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="81dp"
         android:ems="10"
         android:hint="Full Name"
         android:inputType="textPersonName" />
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="159dp"
+        android:layout_marginTop="138dp"
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress" />
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="217dp"
+        android:layout_marginTop="195dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="70dp"
+        android:layout_marginBottom="43dp"
         android:padding="15dp"
         android:text="Already have an account? Login"
         android:textAlignment="center"
@@ -67,4 +67,84 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:visibility="gone" />
+
+    <CheckBox
+        android:id="@+id/checkBoxArt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/btnSignUp"
+        android:layout_marginBottom="249dp"
+        android:text="Art" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/btnSignUp"
+        android:layout_marginTop="258dp"
+        android:text="Choose Interests:" />
+
+    <CheckBox
+        android:id="@+id/checkBoxCulture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkBoxArt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-249dp"
+        android:text="Culture" />
+
+    <CheckBox
+        android:id="@+id/checkBoxSports"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/checkBoxArt"
+        android:layout_centerHorizontal="true"
+        android:text="Sports" />
+
+    <CheckBox
+        android:id="@+id/checkBoxMusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/checkBoxScience"
+        android:layout_below="@+id/checkBoxArt"
+        android:layout_marginTop="-249dp"
+        android:text="Music" />
+
+    <CheckBox
+        android:id="@+id/checkBoxTech"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/btnSignUp"
+        android:layout_below="@+id/checkBoxArt"
+        android:layout_marginTop="-249dp"
+        android:text="Tech" />
+
+    <CheckBox
+        android:id="@+id/checkBoxScience"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/checkBoxArt"
+        android:layout_marginEnd="66dp"
+        android:text="Science" />
+
+    <CheckBox
+        android:id="@+id/checkBoxEducation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/btnSignUp"
+        android:layout_marginBottom="177dp"
+        android:text="Education" />
+
+    <CheckBox
+        android:id="@+id/checkBoxRecreation"
+        android:layout_width="109dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnSignUp"
+        android:layout_alignTop="@+id/checkBoxEducation"
+        android:text="Recreation" />
+
 </RelativeLayout>
