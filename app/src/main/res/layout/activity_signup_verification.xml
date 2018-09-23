@@ -17,11 +17,21 @@
         android:id="@+id/textViewVerified"
         android:layout_width="302dp"
         android:layout_height="28dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="78dp"
+        android:layout_centerInParent="true"
+        android:fontFamily="sans-serif-condensed"
         android:text="Verified"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="190dp"
+        android:onClick="OnClickLogOut"
+        android:text="Log Out" />
 
 </RelativeLayout>

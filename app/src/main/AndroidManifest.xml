@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="xyz.whatson.android">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -32,7 +34,8 @@
         </activity>
         <activity
             android:name=".activities.ViewEventActivity"
-            android:label="@string/title_activity_view_event"></activity>
+            android:label="@string/title_activity_view_event" />
+        <activity android:name=".activities.CreateEvent"></activity>
     </application>
 
 </manifest>

@@ -11,6 +11,7 @@
     <string name="input_error_password_length">password should be atleast 6 characters long</string>
     <string name="input_error_phone_invalid">enter a valid phone number</string>
     <string name="registration_success">Registered Successfully</string>
+    <string name="event_registration_success">Event Created Successfully</string>
     <string name="input_error_email_invalid">enter a valid email</string>
     <string name="title_activity_events_feed">Events Feed</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

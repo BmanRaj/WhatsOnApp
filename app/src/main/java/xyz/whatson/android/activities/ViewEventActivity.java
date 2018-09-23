@@ -72,8 +72,8 @@ public class ViewEventActivity extends AppCompatActivity {
             mEventNameText.setText(event.getTitle());
             mEventOrganiserNameText.setText("by Sample Student Club");
 
-            mDateText.setText(new SimpleDateFormat("d MMM").format(event.getEventStart()));
-            mTimeText.setText(new SimpleDateFormat("ha").format(event.getEventStart()));
+            mDateText.setText(new SimpleDateFormat("d MMM").format(event.getEventDate()));
+            mTimeText.setText(new SimpleDateFormat("ha").format(event.getEventDate()));
             mLocationText.setText("Here");
             String price = NumberFormat.getCurrencyInstance().format(event.getPriceInCents());
             mPriceText.setText("$" + price);

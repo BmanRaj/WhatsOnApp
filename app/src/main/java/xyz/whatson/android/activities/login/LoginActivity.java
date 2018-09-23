@@ -16,6 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import xyz.whatson.android.R;
+import xyz.whatson.android.activities.EventsFeedActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -93,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(this, SignupVerificationActivity.class));
         }
     }
+
 
     @Override
     public void onClick(View view) {
