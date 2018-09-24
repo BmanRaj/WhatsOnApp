@@ -36,11 +36,12 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/editTextTitle"
-        android:layout_marginTop="240dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="Select Category:" />
+        android:text="Select Category:"
+        android:layout_toLeftOf="@id/spinner"
+        android:layout_alignTop="@id/spinner"
+        />
 
     <EditText
         android:id="@+id/editTextDate"
@@ -100,7 +101,8 @@
         android:id="@+id/btnChooseImage"
         android:layout_width="177dp"
         android:layout_height="35dp"
-        android:layout_centerInParent="true"
+        android:layout_above="@+id/imageViewEventImage"
+        android:layout_centerHorizontal="true"
         android:fontFamily="sans-serif-condensed"
         android:text="Choose Image"
         android:textSize="14sp" />
@@ -108,10 +110,9 @@
     <ImageView
         android:id="@+id/imageViewEventImage"
         android:layout_width="273dp"
-        android:layout_height="179dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="141dp"
+        android:layout_above="@+id/btnCreateEvent"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="80dp"
         android:background="@drawable/common_google_signin_btn_icon_dark_normal_background"
         android:contentDescription="image preview"
         android:src="@drawable/common_full_open_on_phone" />
@@ -181,4 +182,34 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/editTextDate"
+        android:layout_below="@+id/editTextDate"
+        android:text="Event Location"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/locationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/btnCreateEvent"
+        android:layout_marginTop="244dp" />
+
+    <Button
+        android:id="@+id/btnMap"
+        android:layout_width="60dp"
+        android:layout_height="36dp"
+        android:layout_alignStart="@+id/editTextDate"
+        android:layout_below="@+id/textView7"
+        android:text="Add"
+        android:textSize="14sp" />
+
+
+
+
 </RelativeLayout>

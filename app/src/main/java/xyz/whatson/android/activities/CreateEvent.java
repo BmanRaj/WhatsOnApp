@@ -1,6 +1,7 @@
 package xyz.whatson.android.activities;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -30,6 +33,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -67,7 +72,17 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
     private SimpleDateFormat dateFormatter;
 
 
+
     private final int PICK_IMAGE_REQUEST = 71;
+
+
+
+    public String eventLocation = "Please enter an address";
+    private final int MAP_REQUEST_CODE = 456;
+    private static final int ERROR_DIALOG_REQUEST = 9001;
+    private static final String TAG = "CreateEvent";
+    TextView locText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +128,61 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
         categories.add("Education");
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         spinner.setAdapter(dataAdapter);
+
+
+        //event location
+        locText = (TextView) findViewById(R.id.locationText);
+        locText.setText(eventLocation);
+        if(isServicesOK()) {
+            initMap();
+        }
     }
+
+    //EVENT LOCATION FUNCTIONS//
+
+    private void initMap () {
+        Button btnMap = (Button) findViewById(R.id.btnMap);
+        btnMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CreateEvent.this, MapActivity.class);
+                intent.putExtra("Location", eventLocation);
+                startActivityForResult(intent, MAP_REQUEST_CODE);
+            }
+        });
+
+    }
+
+
+
+    public boolean isServicesOK() {
+        Log.d(TAG, "isServicesOK: checking google services version");
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(CreateEvent.this);
+
+        if(available == ConnectionResult.SUCCESS) {
+            //everything is fine and user can make map requests
+            Log.d(TAG, "isServicesOK: Google Play Services is working");
+            return true;
+        }
+        else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
+            //an error occurred but we can resolve it
+            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(CreateEvent.this, available, ERROR_DIALOG_REQUEST);
+            dialog.show();
+        }
+        else {
+            Toast.makeText(this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+        }
+        return false;
+
+    }
+
+
+
+
+
+
+
 
     public void chooseStartTime () {
             calendar = Calendar.getInstance();
@@ -276,6 +345,14 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
             catch (IOException e)
             {
                 e.printStackTrace();
+            }
+        }
+
+        if (requestCode == MAP_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                eventLocation = data.getStringExtra("Location");
+                locText.setText(eventLocation);
+                Toast.makeText(this, "eventLocation = " + eventLocation, Toast.LENGTH_SHORT).show();
             }
         }
     }
