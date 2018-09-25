@@ -53,15 +53,15 @@
         <activity
             android:name=".activities.detail.ViewEventActivity"
             android:label="@string/title_activity_view_event" />
-        <activity android:name=".activities.detail.CreateEvent" />
+        <activity android:name=".activities.detail.CreateEventActivity" />
 
         <!-- Other Activities -->
         <activity android:name=".activities.detail.MapActivity" />
-        <!-- <activity
-            android:name=".activities.MyEvents"
+        <activity
+            android:name=".activities.MyEventsActivity"
             android:label="@string/title_activity_my_events"
             android:theme="@style/AppTheme">
-        </activity> -->
+        </activity>
     </application>
 
 </manifest>

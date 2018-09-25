@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import xyz.whatson.android.R;
-import xyz.whatson.android.activities.detail.CreateEvent;
+import xyz.whatson.android.activities.detail.CreateEventActivity;
 import xyz.whatson.android.activities.detail.ViewEventActivity;
 import xyz.whatson.android.activities.login.LoginActivity;
 import xyz.whatson.android.activities.settings.SettingsActivity;
@@ -77,9 +77,7 @@ public class EventsFeedActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Snackbar.make(view, "TODO: map button to create event activity", Snackbar.LENGTH_SHORT)
-                        //.setAction("Action", null).show();
-                    startActivity(new Intent(EventsFeedActivity.this, CreateEvent.class));
+                startActivity(new Intent(EventsFeedActivity.this, CreateEventActivity.class));
             }
         });
 
@@ -150,9 +148,9 @@ public class EventsFeedActivity extends AppCompatActivity
             startActivity(i);
         }
 
-        // // Highlights the current page in the navigation drawer.
-        // NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        // navigationView.getMenu().getItem(0).setChecked(true);
+        // Highlights the current page in the navigation drawer.
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     private void prepareEvents() {
@@ -216,8 +214,8 @@ public class EventsFeedActivity extends AppCompatActivity
         if (id == R.id.nav_main_feed) {
             // do nothing
         } else if (id == R.id.nav_my_events) {
-            // TODO: go to my events activity
-            // startActivity(new Intent(this, MyEvents.class));
+            // Go to the My Events page
+            startActivity(new Intent(this, MyEventsActivity.class));
         } else if (id == R.id.nav_settings) {
             // Go to the Settings Page
             startActivity(new Intent(this, SettingsActivity.class));
