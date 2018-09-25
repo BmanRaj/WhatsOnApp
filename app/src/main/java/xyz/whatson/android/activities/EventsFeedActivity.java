@@ -28,6 +28,7 @@ import java.util.List;
 
 import xyz.whatson.android.R;
 import xyz.whatson.android.activities.login.LoginActivity;
+import xyz.whatson.android.activities.login.SignupVerificationActivity;
 import xyz.whatson.android.activities.settings.SettingsActivity;
 import xyz.whatson.android.adapter.EventAdapter;
 import xyz.whatson.android.adapter.RecyclerOnClickListener;
@@ -78,8 +79,9 @@ public class EventsFeedActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "TODO: map button to create event activity", Snackbar.LENGTH_SHORT)
-                        .setAction("Action", null).show();
+               // Snackbar.make(view, "TODO: map button to create event activity", Snackbar.LENGTH_SHORT)
+                        //.setAction("Action", null).show();
+                    startActivity(new Intent(EventsFeedActivity.this, CreateEvent.class));
             }
         });
 
@@ -164,7 +166,7 @@ public class EventsFeedActivity extends AppCompatActivity
 
         for(int i = 0 ; i < 10; i++ ) {
             cal.set(Calendar.DAY_OF_MONTH,i);
-            eventList.add(new Event(titles[i % titles.length], cal.getTime(), "Seymour Centre"));
+            eventList.add(new Event(titles[i % titles.length], "test description", "test host", cal.getTime(),cal.getTime(), cal.getTime(), "Seymour Centre", "test URL", "test owner"));
         }
 
 

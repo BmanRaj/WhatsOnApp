@@ -11,27 +11,37 @@ import java.util.Date;
 public class Event implements Parcelable {
     // Core fields
     private String title;
-    private Date eventStart;
-    private Date eventEnd;
+    private Date eventStartTime;
+    private Date eventEndTime;
+    private Date eventDate;
     private String description;
     private int priceInCents;
     private String eventLocationText;
+    private String imageURL;
+    private String category;
 //    private Pair<Float, Float> eventLocationPin;
     private String registerURL;
+    private String host;
+    private String owner;
 //    private Bitmap image;
 //    private User eventHost;
 
 
 
-    public Event(String title, Date eventStart, String eventLocationText) {
+    public Event(String title, String description, String host,  Date eventDate, Date eventStartTime, Date eventEndTime, String category, String imageURL, String owner) {
         this.title = title;
-        this.eventStart = eventStart;
-        this.eventEnd = eventStart;
-        this.description = "";
+        this.description = description;
+        this.host = host;
+        this.eventDate = eventDate;
+        this.eventStartTime = eventStartTime;
+        this.eventEndTime = eventEndTime;
+        this.category = category;
         this.priceInCents = 0;
         this.eventLocationText = "";
+        this.imageURL = imageURL;
 //        this.eventLocationPin = null;
         this.registerURL = null;
+        this.owner = owner;
 //        this.image = null;
 //        this.eventHost = creator;
     }
@@ -50,13 +60,18 @@ public class Event implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeSerializable(eventStart);
-        dest.writeSerializable(eventEnd);
+        dest.writeSerializable(eventDate);
+        dest.writeSerializable(eventStartTime);
+        dest.writeSerializable(eventEndTime);
         dest.writeString(description);
-        dest.writeInt(priceInCents);
+        dest.writeString(host);
+        dest.writeString(imageURL);
+        dest.writeString(category);
+        //dest.writeInt(priceInCents);
         dest.writeString(eventLocationText);
 //        dest.writeSerializable(eventLocationPin);
         dest.writeString(registerURL);
+        dest.writeString(owner);
 //        dest.writeSerializable(image);
 //        dest.writeSerializable(eventHost);
     }
@@ -76,12 +91,17 @@ public class Event implements Parcelable {
     // Unpack object
     public Event(Parcel in) {
         title = in.readString();
-        eventStart = (Date) in.readSerializable();
-        eventEnd = (Date) in.readSerializable();
+        eventDate = (Date) in.readSerializable();
+        eventStartTime = (Date) in.readSerializable();
+        eventEndTime = (Date) in.readSerializable();
         description = in.readString();
+        host = in.readString();
+        category = in.readString();
         priceInCents = in.readInt();
         eventLocationText = in.readString();
         registerURL = in.readString();
+        imageURL = in.readString();
+        owner = in.readString();
 
     }
 
@@ -99,22 +119,6 @@ public class Event implements Parcelable {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Date getEventStart() {
-        return eventStart;
-    }
-
-    public void setEventStart(Date eventStart) {
-        this.eventStart = eventStart;
-    }
-
-    public Date getEventEnd() {
-        return eventEnd;
-    }
-
-    public void setEventEnd(Date eventEnd) {
-        this.eventEnd = eventEnd;
     }
 
     public String getDescription() {
@@ -147,7 +151,47 @@ public class Event implements Parcelable {
         this.registerURL = registerURL;
     }
 
-//    public Bitmap getImage() {
+    public Date getEventStartTime() {
+        return eventStartTime;
+    }
+
+    public void setEventStartTime(Date eventStartTime) {
+        this.eventStartTime = eventStartTime;
+    }
+
+    public Date getEventEndTime() {
+        return eventEndTime;
+    }
+
+    public void setEventEndTime(Date eventEndTime) {
+        this.eventEndTime = eventEndTime;
+    }
+
+    public Date getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(Date eventDate) {
+        this.eventDate = eventDate;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    //    public Bitmap getImage() {
 //        return image;
 //    }
 //
@@ -163,4 +207,19 @@ public class Event implements Parcelable {
 //        this.eventHost = eventHost;
 //    }
 
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
 }
