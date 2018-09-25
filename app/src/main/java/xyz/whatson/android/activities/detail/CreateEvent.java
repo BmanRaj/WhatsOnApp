@@ -1,8 +1,7 @@
-package xyz.whatson.android.activities;
+package xyz.whatson.android.activities.detail;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,17 +36,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.FirebaseStorage.*;
 import com.google.firebase.storage.StorageReference;
 
 import xyz.whatson.android.R;
 import xyz.whatson.android.activities.login.LoginActivity;
-import xyz.whatson.android.activities.login.SignupActivity;
 import xyz.whatson.android.model.Event;
 
 public class CreateEvent extends AppCompatActivity implements View.OnClickListener {
