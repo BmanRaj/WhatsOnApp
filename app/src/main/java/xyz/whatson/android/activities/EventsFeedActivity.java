@@ -63,6 +63,9 @@ public class EventsFeedActivity extends AppCompatActivity
         /*
             Initialises the activity's layout
         */
+        setTheme(R.style.AppTheme); // Change the activity background from the splash screen logo,
+                                    // to the normal background.
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_feed);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
