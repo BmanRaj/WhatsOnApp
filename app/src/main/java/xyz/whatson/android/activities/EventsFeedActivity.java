@@ -169,7 +169,7 @@ public class EventsFeedActivity extends AppCompatActivity
 
         for(int i = 0 ; i < 10; i++ ) {
             cal.set(Calendar.DAY_OF_MONTH,i);
-            eventList.add(new Event(titles[i % titles.length], "test description", "test host", cal.getTime(),cal.getTime(), cal.getTime(), "Seymour Centre", "test URL", "test owner"));
+            eventList.add(new Event(titles[i % titles.length], "test description", "test host", cal.getTime(),cal.getTime(), cal.getTime(), "test category", "test URL", "test owner", "test location"));
         }
 
 

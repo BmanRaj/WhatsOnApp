@@ -28,7 +28,7 @@ public class Event implements Parcelable {
 
 
 
-    public Event(String title, String description, String host,  Date eventDate, Date eventStartTime, Date eventEndTime, String category, String imageURL, String owner) {
+    public Event(String title, String description, String host,  Date eventDate, Date eventStartTime, Date eventEndTime, String category, String imageURL, String owner, String eventLocationText) {
         this.title = title;
         this.description = description;
         this.host = host;
@@ -37,7 +37,7 @@ public class Event implements Parcelable {
         this.eventEndTime = eventEndTime;
         this.category = category;
         this.priceInCents = 0;
-        this.eventLocationText = "";
+        this.eventLocationText = eventLocationText;
         this.imageURL = imageURL;
 //        this.eventLocationPin = null;
         this.registerURL = null;

@@ -73,7 +73,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
 
 
-    public String eventLocation = "Please enter an address";
+    public String eventLocation = "";
     private final int MAP_REQUEST_CODE = 456;
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private static final String TAG = "CreateEventActivityActivity";
@@ -284,7 +284,10 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             editTextEndTime.requestFocus();
             return;
         }
-
+        if(eventLocation.equals("")) {
+            Toast.makeText(this, "Please enter an event location", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -292,7 +295,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         imageURL = uploadImage();
 
         //create event object and save in firebase database
-        Event event = new Event(title, description, host, eventDate , eventStartTime, eventEndTime, category, imageURL, owner);
+        Event event = new Event(title, description, host, eventDate , eventStartTime, eventEndTime, category, imageURL, owner, eventLocation);
         DatabaseReference eventRef = ref.child("Events");
         eventRef.push().setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -348,7 +351,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             if (resultCode == RESULT_OK) {
                 eventLocation = data.getStringExtra("Location");
                 locText.setText(eventLocation);
-                Toast.makeText(this, "eventLocation = " + eventLocation, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "eventLocation = " + eventLocation, Toast.LENGTH_SHORT).show();
             }
         }
     }
