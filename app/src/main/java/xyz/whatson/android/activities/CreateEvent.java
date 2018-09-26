@@ -49,6 +49,7 @@ import xyz.whatson.android.R;
 import xyz.whatson.android.activities.login.LoginActivity;
 import xyz.whatson.android.activities.login.SignupActivity;
 import xyz.whatson.android.model.Event;
+import xyz.whatson.android.services.EventServices;
 
 public class CreateEvent extends AppCompatActivity implements View.OnClickListener {
 
@@ -311,6 +312,9 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
                 }
             }
         });
+
+        EventServices es = new EventServices();
+        es.
     }
 
     //method to select image from gallery
