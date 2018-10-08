@@ -259,11 +259,13 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
         }
         try {
             eventStartTime = time.parse(editTextStartTime.getText().toString());
+            eventStartTime = new Date(eventDate.getTime() + eventStartTime.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
         try {
             eventEndTime = time.parse(editTextEndTime.getText().toString());
+            eventEndTime = new Date(eventDate.getTime() + eventEndTime.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -312,9 +314,6 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
                 }
             }
         });
-
-        EventServices es = new EventServices();
-        es.
     }
 
     //method to select image from gallery

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,15 +21,17 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import xyz.whatson.android.R;
 import xyz.whatson.android.activities.login.LoginActivity;
-import xyz.whatson.android.activities.login.SignupVerificationActivity;
 import xyz.whatson.android.activities.settings.SettingsActivity;
 import xyz.whatson.android.adapter.EventAdapter;
 import xyz.whatson.android.adapter.RecyclerOnClickListener;
 import xyz.whatson.android.model.Event;
+import xyz.whatson.android.services.AppCallback;
+import xyz.whatson.android.services.EventServices;
 
 public class EventsFeedActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -39,6 +41,7 @@ public class EventsFeedActivity extends AppCompatActivity
     private RecyclerView recyclerView;
     private EventAdapter adapter;
     private List<Event> eventList;
+    private EventServices eventServices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,37 +106,54 @@ public class EventsFeedActivity extends AppCompatActivity
             }
         }));
 
-
-        /*
-            Populate events lists
-
-
+        /**
+         * Initialise event services which handles background database synchronising
          */
-        // Create data source and populate events feed with data
+        eventServices = EventServices.getInstance();
+
         eventList = new ArrayList<>();
         adapter = new EventAdapter(this, eventList);
         recyclerView.setAdapter(adapter);
         prepareEvents();
+
     }
 
     private void prepareEvents() {
         /*
             Adding a few events for testing
-
         */
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR,2018);
         cal.set(Calendar.MONTH,12);
 
-        String[] titles = {"Anime Meetup", "Lunchtime Basketball", "Lunchtime Games", "Pickup Soccer"};
+        Log.d(TAG, "getting prepare events");
 
-        for(int i = 0 ; i < 10; i++ ) {
-            cal.set(Calendar.DAY_OF_MONTH,i);
-            eventList.add(new Event(titles[i % titles.length], "test description", "test host", cal.getTime(),cal.getTime(), cal.getTime(), "Seymour Centre", "test URL", "test owner"));
-        }
+        // Create data source and populate events feed with data
+        eventServices.getEventsFeedEvents(new Date().getTime(), new AppCallback<List<Event>>() {
+            @Override
+            public void call(final List events) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        eventList.addAll(events);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
 
+            @Override
+            public void call() {
 
-        adapter.notifyDataSetChanged();
+            }
+        });
+
+//        String[] titles = {"Anime Meetup", "Lunchtime Basketball", "Lunchtime Games", "Pickup Soccer"};
+
+//        for(int i = 0 ; i < 10; i++ ) {
+//            cal.set(Calendar.DAY_OF_MONTH,i);
+//            eventList.add(new Event(titles[i % titles.length], "test description", "test host", cal.getTime(),cal.getTime(), cal.getTime(), "Seymour Centre", "test URL", "test owner"));
+//        }
+
     }
 
 

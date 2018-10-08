@@ -1,5 +1,8 @@
 package xyz.whatson.android.services;
 
-public interface AppCallback {
+import java.util.List;
+
+public interface AppCallback<T> {
+    public void call(T t);
     public void call();
 }
