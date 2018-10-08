@@ -102,8 +102,7 @@ public class EventsFeedActivity extends AppCompatActivity
         */
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         //// creates a staggered grid
-        RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, RecyclerView.VERTICAL));
 //        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -202,7 +201,9 @@ public class EventsFeedActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
+            startActivity(new Intent(this, SearchActivity.class));
+        } else if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         }
 

@@ -191,4 +191,5 @@
     <string name="starred_events">Starred Events</string>
     <string name="events_ive_hosted">Events I\'ve Hosted</string>
     <string name="past_events">Past Events</string>
+    <string name="search_hint">Search campus events</string>
 </resources>
