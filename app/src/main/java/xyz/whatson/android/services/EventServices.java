@@ -57,7 +57,7 @@ public class EventServices {
                 if(latestEvent != null){
                     latestEventArr[0] = latestEvent.getEventStartTime().getTime();
                 }
-                Log.d("Get latest event", latestEvent.getTitle());
+//                Log.d("Get latest event", latestEvent.getTitle());
             }
         });
 
@@ -86,7 +86,7 @@ public class EventServices {
                     }
                 }).start();
 
-                Log.d("On child added", event.getTitle());
+//                Log.d("On child added", event.getTitle());
 
             }
 
@@ -104,7 +104,7 @@ public class EventServices {
                     }
                 }).start();
 
-                Log.d("On child changed", event.getTitle());
+//                Log.d("On child changed", event.getTitle());
 
             }
 
@@ -122,7 +122,7 @@ public class EventServices {
                     }
                 }).start();
 
-                Log.d("On child added", event.getTitle());
+//                Log.d("On child added", event.getTitle());
 
             }
 
