@@ -1,4 +1,4 @@
-package xyz.whatson.android.activities;
+package xyz.whatson.android.activities.detail;
 
 import android.content.Intent;
 import android.os.Bundle;

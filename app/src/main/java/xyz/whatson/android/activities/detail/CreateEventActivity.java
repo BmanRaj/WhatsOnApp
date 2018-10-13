@@ -1,8 +1,7 @@
-package xyz.whatson.android.activities;
+package xyz.whatson.android.activities.detail;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -37,21 +36,18 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.FirebaseStorage.*;
 import com.google.firebase.storage.StorageReference;
 
 import xyz.whatson.android.R;
 import xyz.whatson.android.activities.login.LoginActivity;
-import xyz.whatson.android.activities.login.SignupActivity;
 import xyz.whatson.android.model.Event;
 import xyz.whatson.android.services.EventServices;
 
-public class CreateEvent extends AppCompatActivity implements View.OnClickListener {
+public class CreateEventActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ProgressBar progressBar;
     private EditText editTextTitle, editTextDescription, editTextDate, editTextStartTime, editTextEndTime, editTextHost;
@@ -78,10 +74,10 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
 
 
 
-    public String eventLocation = "Please enter an address";
+    public String eventLocation = "";
     private final int MAP_REQUEST_CODE = 456;
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    private static final String TAG = "CreateEvent";
+    private static final String TAG = "CreateEventActivityActivity";
     TextView locText;
 
 
@@ -146,7 +142,7 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
         btnMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CreateEvent.this, MapActivity.class);
+                Intent intent = new Intent(CreateEventActivity.this, MapActivity.class);
                 intent.putExtra("Location", eventLocation);
                 startActivityForResult(intent, MAP_REQUEST_CODE);
             }
@@ -158,7 +154,7 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
 
     public boolean isServicesOK() {
         Log.d(TAG, "isServicesOK: checking google services version");
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(CreateEvent.this);
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(CreateEventActivity.this);
 
         if(available == ConnectionResult.SUCCESS) {
             //everything is fine and user can make map requests
@@ -168,7 +164,7 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
         else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
             //an error occurred but we can resolve it
             Log.d(TAG, "isServicesOK: an error occured but we can fix it");
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(CreateEvent.this, available, ERROR_DIALOG_REQUEST);
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(CreateEventActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
         }
         else {
@@ -190,7 +186,7 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
             currentHour = calendar.get(Calendar.HOUR_OF_DAY);
             currentMinute = calendar.get(Calendar.MINUTE);
 
-            timePickerDialog = new TimePickerDialog(CreateEvent.this, new TimePickerDialog.OnTimeSetListener() {
+            timePickerDialog = new TimePickerDialog(CreateEventActivity.this, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
                     if (hourOfDay >= 12) {
@@ -210,7 +206,7 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
         currentHour = calendar.get(Calendar.HOUR_OF_DAY);
         currentMinute = calendar.get(Calendar.MINUTE);
 
-        timePickerDialog = new TimePickerDialog(CreateEvent.this, new TimePickerDialog.OnTimeSetListener() {
+        timePickerDialog = new TimePickerDialog(CreateEventActivity.this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
                 if (hourOfDay >= 12) {
@@ -291,7 +287,10 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
             editTextEndTime.requestFocus();
             return;
         }
-
+        if(eventLocation.equals("")) {
+            Toast.makeText(this, "Please enter an event location", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -299,18 +298,18 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
         imageURL = uploadImage();
 
         //create event object and save in firebase database
-        Event event = new Event(title, description, host, eventDate , eventStartTime, eventEndTime, category, imageURL, owner);
+        Event event = new Event(title, description, host, eventDate , eventStartTime, eventEndTime, category, imageURL, owner, eventLocation);
         DatabaseReference eventRef = ref.child("Events");
         eventRef.push().setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 progressBar.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    Toast.makeText(CreateEvent.this, getString(R.string.event_registration_success), Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateEventActivity.this, getString(R.string.event_registration_success), Toast.LENGTH_LONG).show();
                     goToEventsFeed();
 
                 } else {
-                    Toast.makeText(CreateEvent.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateEventActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -355,7 +354,7 @@ public class CreateEvent extends AppCompatActivity implements View.OnClickListen
             if (resultCode == RESULT_OK) {
                 eventLocation = data.getStringExtra("Location");
                 locText.setText(eventLocation);
-                Toast.makeText(this, "eventLocation = " + eventLocation, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "eventLocation = " + eventLocation, Toast.LENGTH_SHORT).show();
             }
         }
     }

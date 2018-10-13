@@ -42,34 +42,33 @@ public class SignupVerificationActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        if (mAuth.getCurrentUser() == null) {
+    protected void onResume() {
+        super.onResume();
+        final FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
             finish();
             startActivity(new Intent(this, LoginActivity.class));
+        } else if (user.isEmailVerified()) {
+            finish();
+            Intent intent = new Intent(this, EventsFeedActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
         }
     }
 
     private void loadUserInformation() {
-        final FirebaseUser user = mAuth.getCurrentUser();
-        if (user.isEmailVerified()) {
-            // Go to the Events Feed
-            Intent intent = new Intent(this, EventsFeedActivity.class);
-            startActivity(intent);
-        } else {
-            textView.setText("Email Not Verified (Click to Verify)");
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(SignupVerificationActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            });
-        }
+        textView.setText("Email Not Verified (Click to Verify)");
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(SignupVerificationActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
     }
 
     public void OnClickLogOut (View view) {

@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,6 +26,8 @@ import java.util.Date;
 import java.util.List;
 
 import xyz.whatson.android.R;
+import xyz.whatson.android.activities.detail.CreateEventActivity;
+import xyz.whatson.android.activities.detail.ViewEventActivity;
 import xyz.whatson.android.activities.login.LoginActivity;
 import xyz.whatson.android.activities.settings.SettingsActivity;
 import xyz.whatson.android.adapter.EventAdapter;
@@ -43,16 +46,38 @@ public class EventsFeedActivity extends AppCompatActivity
     private List<Event> eventList;
     private EventServices eventServices;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /*
-            Initialises the activity's layout
+            Decide if we need to redirect the user to the login screen.
+            Else, proceed with creating this activity.
+         */
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            // User is signed out
+            Intent i = new Intent(this, LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        }
+        // TODO: check if the user is logged in, but has not yet verified their email, and ask them to verify.
 
+
+
+
+        /*
+            Initialises the activity's layout
         */
+        setTheme(R.style.AppTheme); // Change the activity background from the splash screen logo,
+                                    // to the normal background.
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_feed);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(R.string.title_activity_events_feed);
+        // https://stackoverflow.com/a/24616650
 
 
         // Maps the floating 'Add Event Button' to the create event activity.
@@ -60,9 +85,7 @@ public class EventsFeedActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // Snackbar.make(view, "TODO: map button to create event activity", Snackbar.LENGTH_SHORT)
-                        //.setAction("Action", null).show();
-                    startActivity(new Intent(EventsFeedActivity.this, CreateEvent.class));
+                startActivity(new Intent(EventsFeedActivity.this, CreateEventActivity.class));
             }
         });
 
@@ -84,8 +107,7 @@ public class EventsFeedActivity extends AppCompatActivity
         */
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         //// creates a staggered grid
-        RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, RecyclerView.VERTICAL);
-        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, RecyclerView.VERTICAL));
 //        recyclerView.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
@@ -116,6 +138,25 @@ public class EventsFeedActivity extends AppCompatActivity
         recyclerView.setAdapter(adapter);
         prepareEvents();
 
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Recheck if the user is logged in, when returning to this activity.
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            // User is signed out
+            Intent i = new Intent(this, LoginActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+        }
+
+        // Highlights the current page in the navigation drawer.
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().getItem(0).setChecked(true);
     }
 
     private void prepareEvents() {
@@ -182,14 +223,15 @@ public class EventsFeedActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
+            startActivity(new Intent(this, SearchActivity.class));
+        } else if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -198,11 +240,13 @@ public class EventsFeedActivity extends AppCompatActivity
         if (id == R.id.nav_main_feed) {
             // do nothing
         } else if (id == R.id.nav_my_events) {
-            // TODO: go to my events activity
+            // Go to the My Events page
+            startActivity(new Intent(this, MyEventsActivity.class));
         } else if (id == R.id.nav_settings) {
             // Go to the Settings Page
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_logout) {
+            // Sign out
             FirebaseAuth.getInstance().signOut();
             finish();
             startActivity(new Intent(this, LoginActivity.class));

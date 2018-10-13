@@ -187,4 +187,9 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <string name="title_activity_my_events">My Events</string>
+    <string name="starred_events">Starred Events</string>
+    <string name="events_ive_hosted">Events I\'ve Hosted</string>
+    <string name="past_events">Past Events</string>
+    <string name="search_hint">Search campus events</string>
 </resources>

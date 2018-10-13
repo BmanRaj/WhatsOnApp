@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.SearchActivity">
+
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="36dp" >
+
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:id="@+id/event_time"-->
+                <!--android:layout_height="72dp">-->
+                <!--<ImageView-->
+                    <!--android:id="@+id/time_icon"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentStart="true"-->
+                    <!--android:src="@drawable/ic_clock"-->
+                    <!--android:layout_centerVertical="true" />-->
+                <!--<Spinner-->
+                    <!--android:id="@+id/search_date"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_toEndOf="@id/time_icon"-->
+                    <!--android:layout_centerVertical="true"-->
+                    <!--android:paddingStart="5dp" />-->
+            <!--</RelativeLayout>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/tags"
+                android:layout_height="72dp">
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBox1_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5sp"
+                    android:text="Art"/>
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBox1_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/checkBox1_1"
+                    android:text="Music"
+                    />
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBox1_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/checkBox1_2"
+                    android:text="Tech" />
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBox1_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/checkBox1_3"
+                    android:text="Careers" />
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBox2_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/checkBox1_1"
+                    android:text="Culture" />
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBox2_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/checkBox1_2"
+                    android:layout_toEndOf="@id/checkBox2_1"
+                    android:text="Sports" />
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBox2_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/checkBox1_3"
+                    android:layout_toEndOf="@id/checkBox2_2"
+                    android:text="Science"
+                    />
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/checkBox2_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/checkBox2_3"
+                    android:layout_below="@id/checkBox1_1"
+                    android:text="Education"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        app:layout_constraintTop_toBottomOf="@id/app_bar"
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:scrollbars="vertical" />
+
+</android.support.constraint.ConstraintLayout>
