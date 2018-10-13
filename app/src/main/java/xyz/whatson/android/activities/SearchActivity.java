@@ -27,6 +27,8 @@ import xyz.whatson.android.activities.detail.ViewEventActivity;
 import xyz.whatson.android.adapter.EventAdapter;
 import xyz.whatson.android.adapter.RecyclerOnClickListener;
 import xyz.whatson.android.model.Event;
+import xyz.whatson.android.services.AppCallback;
+import xyz.whatson.android.services.EventServices;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -36,6 +38,8 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private EventAdapter adapter;
     private List<Event> eventList;
+
+    private EventServices eventServices;
 
 
     private AppCompatCheckBox checkboxArt,checkboxMusic, checkboxTech, checkboxCareers,
@@ -116,6 +120,8 @@ public class SearchActivity extends AppCompatActivity {
             public void onLongClick(View view, int position) {}
         }));
 
+        eventServices = EventServices.getInstance();
+
         eventList = new ArrayList<>();
         adapter = new EventAdapter(this, eventList);
         recyclerView.setAdapter(adapter);
@@ -176,7 +182,24 @@ public class SearchActivity extends AppCompatActivity {
         /*
             Make a remote call to Firebase for searching and displays the results.
          */
-        doRemoteSearch("");
+        String category = "Art";
+        eventServices.searchEventFeed(query, null, null, category, new AppCallback<List<Event>>() {
+            @Override
+            public void call(final List<Event> events) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        eventList.addAll(events);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void call() {
+
+            }
+        });
 
 //        Log.d(TAG, "doSearch: " + query + " " + SearchActivity.DATE_RANGE_LABELS[dateRange] + " ");
         adapter.notifyDataSetChanged();
