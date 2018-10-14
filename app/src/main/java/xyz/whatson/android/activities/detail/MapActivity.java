@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +65,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(-40, -168), new LatLng(71, 136));
 
     private String eventLocation;
+    String isEdit = "true";
 
 
     //widgets
@@ -109,6 +111,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         eventLocation = getIntent().getStringExtra("Location");
         mSearchText.setText(eventLocation);
         mSearchText.requestFocus();
+        Button mapBack = (Button) findViewById(R.id.map_back);
+        mapBack.setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        isEdit = getIntent().getStringExtra("Edit");
+        if (isEdit.equals("false")) {
+            mapBack.setVisibility(View.VISIBLE);
+        }
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
 
@@ -142,7 +155,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         || keyEvent.getAction() == keyEvent.KEYCODE_ENTER) {
 
 
-                    //execute out method for searching
+                    //execute our method for searching
                     geoLocate();
                     eventLocation = mSearchText.getText().toString();
 
@@ -153,7 +166,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-        //   hideSoftKeyboard();
+
     }
 
     private void geoLocate() {

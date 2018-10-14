@@ -85,7 +85,11 @@ public class EventsFeedActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(EventsFeedActivity.this, CreateEventActivity.class));
+                Intent intent = new Intent(EventsFeedActivity.this, CreateEventActivity.class);
+                Event nullEvent = null;
+                intent.putExtra("Event", nullEvent);
+                intent.putExtra("Edit", "false");
+                startActivity(intent);
             }
         });
 

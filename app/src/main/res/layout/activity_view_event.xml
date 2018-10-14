@@ -44,4 +44,16 @@
         app:layout_anchorGravity="bottom|end"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/edit_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/app_bar"
+        app:layout_anchorGravity="top|end"
+        app:srcCompat="@drawable/ic_event_edit"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="invisible"/>
+
+
+
 </android.support.design.widget.CoordinatorLayout>

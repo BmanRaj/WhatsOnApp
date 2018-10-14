@@ -77,7 +77,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     public String eventLocation = "";
     private final int MAP_REQUEST_CODE = 456;
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    private static final String TAG = "CreateEventActivityActivity";
+    private static final String TAG = "CreateEventActivity";
     TextView locText;
 
 
@@ -93,6 +93,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         editTextStartTime = findViewById(R.id.editTextStartTime);
         editTextEndTime = findViewById(R.id.editTextEndTime);
         imageViewEventImage = findViewById(R.id.imageViewEventImage);
+        locText = (TextView) findViewById(R.id.locationText);
         spinner = (Spinner) findViewById(R.id.spinner);
         progressBar = findViewById(R.id.progressbar);
         progressBar.setVisibility(View.GONE);
@@ -126,9 +127,49 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, categories);
         spinner.setAdapter(dataAdapter);
 
+        //populate all the old fields if editing a current event
+        Intent eventIntent = getIntent();
+        if(eventIntent != null && eventIntent.getStringExtra("Edit").equals("true")) {
+            Event event = (Event) eventIntent.getParcelableExtra("Event");
+            editTextTitle.setText(event.getTitle());
+            editTextDescription.setText(event.getDescription());
+            editTextHost.setText(event.getHost());
+
+            eventLocation = event.getEventLocationText();
+            locText.setText(eventLocation);
+
+            String oldCategory = event.getCategory();
+            int categoryNum = 0;
+            switch(oldCategory){
+                case "Art": categoryNum = 0;
+                            break;
+                case "Culture": categoryNum = 1;
+                            break;
+                case "Sports": categoryNum = 2;
+                    break;
+                case "Music": categoryNum = 3;
+                    break;
+                case "Tech": categoryNum = 4;
+                    break;
+                case "Science": categoryNum = 5;
+                    break;
+                case "Recreation": categoryNum = 6;
+                    break;
+                case "Education": categoryNum = 7;
+                    break;
+            }
+            spinner.setSelection(categoryNum);
+
+            editTextDate.setText(dateFormatter.format(event.getEventDate()));
+            editTextStartTime.setText(new SimpleDateFormat("H:mma").format(event.getEventStartTime()));
+            editTextEndTime.setText(new SimpleDateFormat("H:mma").format(event.getEventEndTime()));
+
+
+        }
+
 
         //event location
-        locText = (TextView) findViewById(R.id.locationText);
+
         locText.setText(eventLocation);
         if(isServicesOK()) {
             initMap();
@@ -144,6 +185,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             public void onClick(View v) {
                 Intent intent = new Intent(CreateEventActivity.this, MapActivity.class);
                 intent.putExtra("Location", eventLocation);
+                intent.putExtra("Edit","true");
                 startActivityForResult(intent, MAP_REQUEST_CODE);
             }
         });
@@ -153,17 +195,14 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
 
     public boolean isServicesOK() {
-        Log.d(TAG, "isServicesOK: checking google services version");
         int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(CreateEventActivity.this);
 
         if(available == ConnectionResult.SUCCESS) {
             //everything is fine and user can make map requests
-            Log.d(TAG, "isServicesOK: Google Play Services is working");
             return true;
         }
         else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
             //an error occurred but we can resolve it
-            Log.d(TAG, "isServicesOK: an error occured but we can fix it");
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(CreateEventActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
         }
@@ -245,6 +284,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         Date eventEndTime = null;
         String category = spinner.getSelectedItem().toString();
         String imageURL;
+        long removeOffset = 50400000;
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat time = new SimpleDateFormat("HH:mm");
@@ -255,13 +295,17 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         }
         try {
             eventStartTime = time.parse(editTextStartTime.getText().toString());
-            eventStartTime = new Date(eventDate.getTime() + eventStartTime.getTime());
+
+            eventStartTime = new Date(eventDate.getTime() + eventStartTime.getTime() - removeOffset);
+
+
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
         try {
             eventEndTime = time.parse(editTextEndTime.getText().toString());
-            eventEndTime = new Date(eventDate.getTime() + eventEndTime.getTime());
+            eventEndTime = new Date(eventDate.getTime() + eventEndTime.getTime() - removeOffset);
         } catch (ParseException e) {
             e.printStackTrace();
         }

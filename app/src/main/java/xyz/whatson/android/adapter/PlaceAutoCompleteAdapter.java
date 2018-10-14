@@ -1,3 +1,5 @@
+//https://github.com/googlesamples/android-play-places/tree/master/PlaceCompleteAdapter
+
 package xyz.whatson.android.adapter;
 
 import com.google.android.gms.common.api.GoogleApiClient;
