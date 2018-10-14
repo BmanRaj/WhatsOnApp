@@ -37,8 +37,11 @@ import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -67,7 +70,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     int currentMinute;
     String amPm;
     private SimpleDateFormat dateFormatter;
-
+    boolean isEdit = false;
+    Event editEvent = null;
 
 
     private final int PICK_IMAGE_REQUEST = 71;
@@ -98,6 +102,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         progressBar = findViewById(R.id.progressbar);
         progressBar.setVisibility(View.GONE);
 
+
+
+
         dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
 
@@ -109,6 +116,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         findViewById(R.id.btnChooseImage).setOnClickListener(this);
         findViewById(R.id.btnCreateEvent).setOnClickListener(this);
+
         findViewById(R.id.editTextStartTime).setOnClickListener(this);
         findViewById(R.id.editTextEndTime).setOnClickListener(this);
         findViewById(R.id.editTextDate).setOnClickListener(this);
@@ -130,15 +138,16 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         //populate all the old fields if editing a current event
         Intent eventIntent = getIntent();
         if(eventIntent != null && eventIntent.getStringExtra("Edit").equals("true")) {
-            Event event = (Event) eventIntent.getParcelableExtra("Event");
-            editTextTitle.setText(event.getTitle());
-            editTextDescription.setText(event.getDescription());
-            editTextHost.setText(event.getHost());
+            isEdit = true;
+            editEvent = (Event) eventIntent.getParcelableExtra("Event");
+            editTextTitle.setText(editEvent.getTitle());
+            editTextDescription.setText(editEvent.getDescription());
+            editTextHost.setText(editEvent.getHost());
 
-            eventLocation = event.getEventLocationText();
+            eventLocation = editEvent.getEventLocationText();
             locText.setText(eventLocation);
 
-            String oldCategory = event.getCategory();
+            String oldCategory = editEvent.getCategory();
             int categoryNum = 0;
             switch(oldCategory){
                 case "Art": categoryNum = 0;
@@ -160,9 +169,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             }
             spinner.setSelection(categoryNum);
 
-            editTextDate.setText(dateFormatter.format(event.getEventDate()));
-            editTextStartTime.setText(new SimpleDateFormat("H:mma").format(event.getEventStartTime()));
-            editTextEndTime.setText(new SimpleDateFormat("H:mma").format(event.getEventEndTime()));
+            editTextDate.setText(dateFormatter.format(editEvent.getEventDate()));
+            editTextStartTime.setText(new SimpleDateFormat("H:mma").format(editEvent.getEventStartTime()));
+            editTextEndTime.setText(new SimpleDateFormat("H:mma").format(editEvent.getEventEndTime()));
 
 
         }
@@ -282,7 +291,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         Date eventDate = null;
         Date eventStartTime= null;
         Date eventEndTime = null;
-        String category = spinner.getSelectedItem().toString();
+        final String category = spinner.getSelectedItem().toString();
         String imageURL;
         long removeOffset = 50400000;
 
@@ -341,22 +350,46 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         //call the uplaod image method to upload image to firebase storage
         imageURL = uploadImage();
 
-        //create event object and save in firebase database
-        Event event = new Event(title, description, host, eventDate , eventStartTime, eventEndTime, category, imageURL, owner, eventLocation);
-        DatabaseReference eventRef = ref.child("Events");
-        eventRef.push().setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                progressBar.setVisibility(View.GONE);
-                if (task.isSuccessful()) {
-                    Toast.makeText(CreateEventActivity.this, getString(R.string.event_registration_success), Toast.LENGTH_LONG).show();
-                    goToEventsFeed();
 
-                } else {
-                    Toast.makeText(CreateEventActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+        if (isEdit == true) {
+
+            DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference("Events").child(editEvent.getKey());
+            eventRef.child("category").setValue(category);
+            eventRef.child("description").setValue(description);
+            eventRef.child("eventDate").setValue(eventDate);
+            eventRef.child("eventEndTime").setValue(eventEndTime);
+            eventRef.child("eventLocationText").setValue(eventLocation);
+            eventRef.child("eventStartTime").setValue(eventStartTime);
+            eventRef.child("host").setValue(host);
+            eventRef.child("imageURL").setValue(imageURL);
+            eventRef.child("owner").setValue(owner);
+            eventRef.child("title").setValue(title);
+
+            Toast.makeText(CreateEventActivity.this, "Event Edited Successfully", Toast.LENGTH_LONG).show();
+            goToEventsFeed();
+
+           
+
+        } else {
+            //create new event object and save in firebase database
+
+            Event event = new Event(title, description, host, eventDate , eventStartTime, eventEndTime, category, imageURL, owner, eventLocation);
+            DatabaseReference eventRef = ref.child("Events");
+            eventRef.push().setValue(event).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    progressBar.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        Toast.makeText(CreateEventActivity.this, getString(R.string.event_registration_success), Toast.LENGTH_LONG).show();
+                        goToEventsFeed();
+
+                    } else {
+                        Toast.makeText(CreateEventActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
+        }
+
     }
 
     //method to select image from gallery

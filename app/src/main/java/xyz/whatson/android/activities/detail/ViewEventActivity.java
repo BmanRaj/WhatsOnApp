@@ -1,6 +1,11 @@
 package xyz.whatson.android.activities.detail;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +22,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 import java.text.NumberFormat;
@@ -24,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import xyz.whatson.android.R;
+import xyz.whatson.android.activities.EventsFeedActivity;
 import xyz.whatson.android.model.Event;
 
 public class ViewEventActivity extends AppCompatActivity {
@@ -70,6 +78,46 @@ public class ViewEventActivity extends AppCompatActivity {
 
                 } else {
                     Toast.makeText(ViewEventActivity.this, "no event", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        FloatingActionButton deleteEvent = (FloatingActionButton) findViewById(R.id.delete_event);
+        deleteEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(event != null) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ViewEventActivity.this);
+                    builder.setTitle("Delete this event")
+                            .setMessage("Are you sure you want to delete this event?")
+                            .setPositiveButton("Delete", new
+                                    DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            DatabaseReference eventRef = FirebaseDatabase.getInstance().getReference("Events").child(event.getKey());
+                                            eventRef.removeValue();
+                                            finish();
+
+
+                                            //app restart to refresh feed
+                                            Intent restart = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+                                            restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            startActivity(restart);
+
+                                        }
+                                    })
+                            .setNegativeButton("Cancel", new
+                                    DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            //user cancels, nothing happens
+                                        }
+                                    });
+                    builder.create().show();
+
+
+
+
                 }
             }
         });
@@ -132,6 +180,7 @@ public class ViewEventActivity extends AppCompatActivity {
 
             if (userID.equals(event.getOwner())) {
                 editEvent.setVisibility(View.VISIBLE);
+                deleteEvent.setVisibility(View.VISIBLE);
             }
 
         }

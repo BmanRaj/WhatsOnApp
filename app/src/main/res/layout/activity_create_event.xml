@@ -128,7 +128,10 @@
         android:text="Create Event"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:typeface="monospace" />
+        android:typeface="monospace"
+        />
+
+
 
     <TextView
         android:id="@+id/textView4"
