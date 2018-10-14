@@ -133,6 +133,10 @@ public class SearchActivity extends AppCompatActivity {
     public boolean onSearchRequested() {
         Bundle appData = new Bundle();
 
+        if(checkboxSports.isChecked()){
+            Log.d("SPOROTSFADSLFJSLKJDF", "CHECKED");
+        }
+
         appData.putBoolean(SearchActivity.ART,checkboxArt.isChecked());
         appData.putBoolean(SearchActivity.MUSIC,checkboxMusic.isChecked());
         appData.putBoolean(SearchActivity.TECH,checkboxTech.isChecked());
@@ -156,14 +160,14 @@ public class SearchActivity extends AppCompatActivity {
             String query = intent.getStringExtra(SearchManager.QUERY);
 
 //            int dateRange = intent.getIntExtra(SearchActivity.DATE_RANGE,0);
-            boolean art = intent.getBooleanExtra(SearchActivity.ART, false);
-            boolean music = intent.getBooleanExtra(SearchActivity.MUSIC, false);
-            boolean tech = intent.getBooleanExtra(SearchActivity.TECH, false);
-            boolean careers = intent.getBooleanExtra(SearchActivity.CAREERS, false);
-            boolean culture = intent.getBooleanExtra(SearchActivity.CULTURE, false);
-            boolean sports = intent.getBooleanExtra(SearchActivity.SPORTS, false);
-            boolean science = intent.getBooleanExtra(SearchActivity.SCIENCE, false);
-            boolean education = intent.getBooleanExtra(SearchActivity.EDUCATION, false);
+            boolean art = intent.getBooleanExtra(SearchActivity.ART, checkboxArt.isChecked());
+            boolean music = intent.getBooleanExtra(SearchActivity.MUSIC, checkboxMusic.isChecked());
+            boolean tech = intent.getBooleanExtra(SearchActivity.TECH, checkboxTech.isChecked());
+            boolean careers = intent.getBooleanExtra(SearchActivity.CAREERS, checkboxCareers.isChecked());
+            boolean culture = intent.getBooleanExtra(SearchActivity.CULTURE, checkboxCulture.isChecked());
+            boolean sports = intent.getBooleanExtra(SearchActivity.SPORTS, checkboxSports.isChecked());
+            boolean science = intent.getBooleanExtra(SearchActivity.SCIENCE, checkboxScience.isChecked());
+            boolean education = intent.getBooleanExtra(SearchActivity.EDUCATION, checkboxEducation.isChecked());
 
             //use the query to search our data somehow
             doSearch(query, art, music, tech, careers,
@@ -182,8 +186,28 @@ public class SearchActivity extends AppCompatActivity {
         /*
             Make a remote call to Firebase for searching and displays the results.
          */
-        String category = "Art";
-        eventServices.searchEventFeed(query, null, null, category, new AppCallback<List<Event>>() {
+        ArrayList<String> categories = new ArrayList<String>();
+        if(art) categories.add("Art");
+        if(music) categories.add("Music");
+        if(tech) categories.add("Tech");
+        if(careers) categories.add("Careers");
+        if(culture) categories.add("Culture");
+        if(sports) categories.add("Sports");
+        if(science) categories.add("Science");
+        if(education) categories.add("Education");
+
+        //if none selected search for all categories
+        if(!art && !music && !tech && !careers && !culture && !sports && !science && !education){
+            categories.add("Art");
+            categories.add("Music");
+            categories.add("Tech");
+            categories.add("Careers");
+            categories.add("Culture");
+            categories.add("Sports");
+            categories.add("Science");
+            categories.add("Education");
+        }
+        eventServices.searchEventFeed(query, null, null, categories, new AppCallback<List<Event>>() {
             @Override
             public void call(final List<Event> events) {
                 runOnUiThread(new Runnable() {

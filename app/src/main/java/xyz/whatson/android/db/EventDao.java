@@ -7,6 +7,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.RawQuery;
 
 import java.util.List;
 
@@ -24,8 +25,8 @@ public interface EventDao {
     @Query("SELECT * FROM events WHERE key = (:key)")
     Event searchByKey(String key);
 
-    @Query("SELECT * FROM events WHERE (LOWER(title) LIKE LOWER(:regex) OR LOWER(description) LIKE LOWER(:regex)) AND (eventStartTime >= (:startTime) OR (:startTime) IS NULL) AND (eventEndTime <= (:endTime) OR (:endTime) IS NULL) AND (category = (:category) OR (:category) IS NULL) ORDER BY eventStartTime ASC")
-    List<Event> searchEvents(String regex, long startTime, long endTime, String category);
+    @Query("SELECT * FROM events WHERE (LOWER(title) LIKE LOWER(:regex) OR LOWER(description) LIKE LOWER(:regex)) AND (eventStartTime >= (:startTime) OR (:startTime) IS NULL) AND (eventEndTime <= (:endTime) OR (:endTime) IS NULL) AND category IN (:categories) ORDER BY eventStartTime ASC")
+    List<Event> searchEvents(String regex, long startTime, long endTime, List<String> categories);
 
 //    @Query("SELECT * FROM events WHERE title REGEXP (:regex) OR description REGEXP (:regex) AND eventStartTime >= (:startTime) AND category = (:category)")
 //    List<Event> searchEvents(String regex, long startTime, String category);
