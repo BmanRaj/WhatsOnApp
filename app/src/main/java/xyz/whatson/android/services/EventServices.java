@@ -164,7 +164,7 @@ public class EventServices {
         }
     }
 
-    public void searchEventFeed(final String searchStr, final Date startTime, final Date endTime, final String category, final AppCallback callback)
+    public void searchEventFeed(final String searchStr, final Date startTime, final Date endTime, final List<String> categories, final AppCallback callback)
     {
         try{
             new AsyncTask<Void, Void, Void>() {
@@ -175,13 +175,17 @@ public class EventServices {
                     long endTimeTime = Long.MAX_VALUE;
                     if(startTime != null) startTimeTime = startTime.getTime();
                     if(endTime != null) endTimeTime = endTime.getTime();
-                    List<Event> events = eventDao.searchEvents(regexSearchStr, startTimeTime, endTimeTime, category);
+                    List<Event> events;
+                    if(categories.size() == 0)
+                        events = eventDao.searchEvents(regexSearchStr, startTimeTime, endTimeTime, null);
+                    else
+                        events = eventDao.searchEvents(regexSearchStr, startTimeTime, endTimeTime, categories);
                     callback.call(events);
                     return null;
                 }
             }.execute().get();
         } catch(Exception e){
-
+            e.printStackTrace();
         }
     }
 
