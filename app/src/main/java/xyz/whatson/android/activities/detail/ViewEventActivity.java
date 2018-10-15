@@ -60,8 +60,8 @@ public class ViewEventActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                  // ref = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid())
-
+                  ref = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("subscribedEvents").child(event.getKey());
+                  ref.setValue(event.getTitle());
             }
         });
 
