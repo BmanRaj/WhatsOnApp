@@ -42,6 +42,12 @@
                 android:paddingRight="@dimen/event_title_padding"
                 android:textSize="@dimen/event_start" />
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/date"
+                android:id="@+id/thumbnail"/>
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

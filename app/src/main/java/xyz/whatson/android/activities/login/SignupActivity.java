@@ -74,6 +74,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         final String Science;
         final String Recreation;
         final String Education;
+        final String subscribedEvent = "subscribedEvent";
 
         String password = editTextPassword.getText().toString().trim();
 
@@ -182,7 +183,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                                     Tech,
                                     Science,
                                     Recreation,
-                                    Education
+                                    Education,
+                                    subscribedEvent
                             );
 
                             FirebaseDatabase.getInstance().getReference("Users")

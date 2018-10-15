@@ -402,10 +402,11 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
     private String uploadImage() {
 
+        String randomString =  UUID.randomUUID().toString();
         if (filePath != null) {
-            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+            StorageReference ref = storageReference.child("images/" + randomString);
             ref.putFile(filePath);
-            return ref.toString();
+            return randomString;
         }
         return null;
     }

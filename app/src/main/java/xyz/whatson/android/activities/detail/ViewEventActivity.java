@@ -42,8 +42,8 @@ public class ViewEventActivity extends AppCompatActivity {
     private static final int ERROR_DIALOG_REQUEST = 9002;
     private FirebaseUser user;
     Event event;
-
-
+    private FirebaseDatabase database;
+    private DatabaseReference ref;
 
 
     @Override
@@ -60,7 +60,8 @@ public class ViewEventActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Favourite event
+                  // ref = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid())
+
             }
         });
 
