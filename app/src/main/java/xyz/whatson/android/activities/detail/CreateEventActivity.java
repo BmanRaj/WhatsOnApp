@@ -141,7 +141,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
 
         //populate all the old fields if editing a current event
         Intent eventIntent = getIntent();
-        if(eventIntent != null && eventIntent.getStringExtra("Edit").equals("true")) {
+        if(eventIntent != null && eventIntent.getStringExtra("Edit") != null && eventIntent.getStringExtra("Edit").equals("true")) {
             getSupportActionBar().setTitle("Edit Event");
             isEdit = true;
             editEvent = (Event) eventIntent.getParcelableExtra("Event");
