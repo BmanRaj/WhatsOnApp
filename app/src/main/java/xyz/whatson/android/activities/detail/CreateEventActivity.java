@@ -388,7 +388,13 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
                     progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
                         Toast.makeText(CreateEventActivity.this, getString(R.string.event_registration_success), Toast.LENGTH_LONG).show();
-                        goToEventsFeed();
+                        //app restart to refresh feed
+                        Intent restart = getBaseContext().getPackageManager().getLaunchIntentForPackage(getBaseContext().getPackageName());
+                        restart.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(restart);
+
+
+                        //goToEventsFeed();
 
                     } else {
                         Toast.makeText(CreateEventActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -410,9 +416,10 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private String uploadImage() {
 
         if (filePath != null) {
-            StorageReference ref = storageReference.child("images/" + UUID.randomUUID().toString());
+            String randomString = UUID.randomUUID().toString();
+            StorageReference ref = storageReference.child("images/" + randomString);
             ref.putFile(filePath);
-            return ref.toString();
+            return randomString;
         }
         return null;
     }
