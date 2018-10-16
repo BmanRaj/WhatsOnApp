@@ -152,6 +152,7 @@ public class SearchActivity extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent){
+        eventList.clear();
         handleIntent(intent);
     }
 

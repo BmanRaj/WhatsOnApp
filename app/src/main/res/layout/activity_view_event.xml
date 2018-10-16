@@ -60,7 +60,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         android:layout_gravity="left|center_vertical"
-        android:layout_margint="100dp"
 
         android:visibility="invisible"
         app:layout_anchor="@id/spacer"
