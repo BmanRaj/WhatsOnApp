@@ -4,55 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.login.LoginActivity">
+    tools:context=".activities.login.LoginActivity"
+    android:background="@color/white">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp">
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="195dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="190dp"
-        android:text="Login" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:maxWidth="300dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo_app_splash"
 
-    <EditText
-        android:id="@+id/etEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="151dp"
-        android:ems="10"
-        android:hint="Email"
-        android:inputType="textEmailAddress" />
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="100dp"/>
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="208dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword" />
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
 
-    <Button
-        android:id="@+id/btnGoToRegister"
-        android:layout_width="194dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="131dp"
-        android:text="Sign Up" />
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Login" />
+
+            <Button
+                android:id="@+id/btnGoToRegister"
+                android:layout_toEndOf="@id/btnLogin"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Sign Up" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressbar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:visibility="gone" />
 
 </RelativeLayout>
