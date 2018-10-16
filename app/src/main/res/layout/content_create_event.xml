@@ -288,7 +288,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:id="@+id/location_header"
-                android:layout_height="72dp" >
+                android:layout_height="wrap_content" >
 
                 <ImageView
                     android:id="@+id/location_icon"
@@ -318,7 +318,8 @@
                         android:id="@+id/locationText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="244dp" />
+                        android:layout_marginTop="1dp"
+                        />
 
                 </LinearLayout>
 

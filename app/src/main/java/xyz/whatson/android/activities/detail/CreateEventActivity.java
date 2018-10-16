@@ -300,7 +300,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         Date eventEndTime = null;
         final String category = spinner.getSelectedItem().toString();
         String imageURL;
-        long removeOffset = 50400000;
+        long removeOffset = 36000000;
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat time = new SimpleDateFormat("HH:mm");
@@ -312,7 +312,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         try {
             eventStartTime = time.parse(editTextStartTime.getText().toString());
 
-            eventStartTime = new Date(eventDate.getTime() + eventStartTime.getTime() - removeOffset);
+            eventStartTime = new Date(eventDate.getTime() + eventStartTime.getTime() + removeOffset);
 
 
 
@@ -321,7 +321,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         }
         try {
             eventEndTime = time.parse(editTextEndTime.getText().toString());
-            eventEndTime = new Date(eventDate.getTime() + eventEndTime.getTime() - removeOffset);
+            eventEndTime = new Date(eventDate.getTime() + eventEndTime.getTime() + removeOffset);
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,12 +28,16 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import xyz.whatson.android.R;
 import xyz.whatson.android.activities.EventsFeedActivity;
 import xyz.whatson.android.model.Event;
+import xyz.whatson.android.services.MyReceiver;
 
 public class ViewEventActivity extends AppCompatActivity {
 
@@ -45,6 +50,9 @@ public class ViewEventActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference ref;
 
+    Calendar notifTime = null;
+    private String startTime;
+    private String startHour;
 
 
 
@@ -64,6 +72,43 @@ public class ViewEventActivity extends AppCompatActivity {
             public void onClick(View view) {
                 ref = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid()).child("subscribedEvents").child(event.getKey());
                 ref.setValue(event.getTitle());
+                Toast.makeText(ViewEventActivity.this, "You have subscribed to this event.", Toast.LENGTH_SHORT).show();
+
+
+                 Log.d("mStartDateText = ", startTime);
+                 //Log.d("startHour = ", String.valueOf(notifTime.get(Calendar.HOUR_OF_DAY)));
+                SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM d HH:mm:ss z yyyy");
+                try{
+
+                    Intent notifyIntent = new Intent(ViewEventActivity.this, MyReceiver.class);
+                    notifyIntent.putExtra("EventTitle", event.getTitle());
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(ViewEventActivity.this, 0, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+                    Date notifDate = dateFormat.parse(startTime);
+                    Calendar notifCal = Calendar.getInstance();
+                    notifCal.setTime(notifDate);
+                    notifCal.add(Calendar.MINUTE, -15);
+                    notifDate = notifCal.getTime();
+                    String notifToString = dateFormat.format(notifDate);
+
+
+                    Log.d("notifDate", notifToString);
+
+
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                    if(notifCal.getTimeInMillis() - System.currentTimeMillis() > 0) {
+                        alarmManager.set(AlarmManager.RTC_WAKEUP, notifCal.getTimeInMillis(), pendingIntent);
+                    }
+                } catch (ParseException e) {
+                    Log.e("notifDate", "failed");
+                    e.printStackTrace();
+                }
+
+                //String dateTime = dateFormat.format()
+
+
             }
         });
 
@@ -180,6 +225,14 @@ public class ViewEventActivity extends AppCompatActivity {
             eventLocation = event.getEventLocationText();
             mDescriptionText.setText(event.getDescription());
             mCategoryText.setText(event.getCategory());
+
+            startTime = event.getEventStartTime().toString();
+
+           /* if(event.getEventStartTime() != null) {
+                notifTime.setTime(event.getEventStartTime());
+
+            } */
+
 
             if (userID.equals(event.getOwner())) {
                 editEvent.setVisibility(View.VISIBLE);
