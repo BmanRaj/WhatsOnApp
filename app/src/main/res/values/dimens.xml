@@ -14,7 +14,7 @@
     <dimen name="event_image_height">160dp</dimen>
     <dimen name="event_title_padding">10dp</dimen>
     <dimen name="event_title">15sp</dimen>
-    <dimen name="event_start">12sp</dimen>
+    <dimen name="event_start">15sp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
 
