@@ -3,12 +3,15 @@ package xyz.whatson.android.services;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class EventServices {
     private static EventServices eventServices = null;
 
     DatabaseReference dbRef;
+    FirebaseAuth mAuth;
 
     WhatsonDB db;
     EventDao eventDao;
@@ -37,6 +41,8 @@ public class EventServices {
         //create instance of whatson db and eventDao
         db = WhatsonDB.getDatabase(WhatsOn.getAppContext());
         eventDao = db.eventDao();
+
+        mAuth = FirebaseAuth.getInstance();
 
         //initialise firebase db connection
         FirebaseDatabase db = FirebaseDatabase.getInstance();
@@ -189,9 +195,82 @@ public class EventServices {
         }
     }
 
-    public void createEvent(Event event)
+    public void getStarredEvents(final AppCallback callback)
     {
+        FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getUid()).child("subscribedEvents").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<String> events = new ArrayList<>();
+                for(DataSnapshot key: dataSnapshot.getChildren()){
+                    String eventId = key.getKey();
+                    events.add(eventId);
+                }
+                try{
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected Void doInBackground(Void... voids){
+                            List<Event> starredEvents = eventDao.getStarredEvents(events, new Date().getTime());
+                            callback.call(starredEvents);
+                            return null;
+                        }
+                    }.execute().get();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getHostedEvents(final AppCallback callback)
+    {
+        try{
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... voids){
+                    List<Event> hostedEvents = eventDao.getHostedEvents(mAuth.getUid(), new Date().getTime());
+                    callback.call(hostedEvents);
+                    return null;
+                }
+            }.execute().get();
+        } catch (Exception e){
+
+        }
 
     }
 
+    public void getPastEvents(final AppCallback callback)
+    {
+        FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getUid()).child("subscribedEvents").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<String> events = new ArrayList<>();
+                for(DataSnapshot key: dataSnapshot.getChildren()){
+                    String eventId = key.getKey();
+                    events.add(eventId);
+                }
+                try{
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected Void doInBackground(Void... voids){
+                            List<Event> pastEvents = eventDao.getPastEvents(events, new Date().getTime());
+                            callback.call(pastEvents);
+                            return null;
+                        }
+                    }.execute().get();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

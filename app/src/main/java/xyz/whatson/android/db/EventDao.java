@@ -22,6 +22,15 @@ public interface EventDao {
     @Query("SELECT * FROM events WHERE eventStartTime >= (:eventStartTime) ORDER BY eventStartTime ASC")
     List<Event> getEventsAfterTime(long eventStartTime);
 
+    @Query("SELECT * FROM events WHERE key in (:keys) AND eventStartTime >= (:now)")
+    List<Event> getStarredEvents(List<String> keys, long now);
+
+    @Query("SELECT * FROM events WHERE owner = (:uid) AND eventStartTime >= (:now)")
+    List<Event> getHostedEvents(String uid, long now);
+
+    @Query("SELECT * FROM events WHERE key in (:keys) AND eventStartTime <= (:now)")
+    List<Event> getPastEvents(List<String> keys, long now);
+
     @Query("SELECT * FROM events WHERE key = (:key)")
     Event searchByKey(String key);
 

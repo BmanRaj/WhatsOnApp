@@ -30,9 +30,13 @@ import xyz.whatson.android.activities.settings.SettingsActivity;
 import xyz.whatson.android.adapter.EventAdapter;
 import xyz.whatson.android.adapter.RecyclerOnClickListener;
 import xyz.whatson.android.model.Event;
+import xyz.whatson.android.services.AppCallback;
+import xyz.whatson.android.services.EventServices;
 
 public class MyEventsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private EventServices eventServices;
 
     private EventAdapter myEventsAdapter;
     private List<Event> myEventList;
@@ -75,6 +79,7 @@ public class MyEventsActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        eventServices = EventServices.getInstance();
 
         initMyEventsList();
         initHostedEventsList();
@@ -201,60 +206,66 @@ public class MyEventsActivity extends AppCompatActivity
     }
 
     private void prepareMyEvents() {
-        /*
-            Adding a few events for testing
 
-        */
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR,2018);
-        cal.set(Calendar.MONTH,12);
+        eventServices.getStarredEvents(new AppCallback<List<Event>>() {
+            @Override
+            public void call(final List<Event> events) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        myEventList.addAll(events);
+                        myEventsAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
 
-        String[] titles = {"Anime Meetup", "Lunchtime Basketball", "Lunchtime Games", "Pickup Soccer"};
+            @Override
+            public void call() {
 
-        for(int i = 0 ; i < 10; i++ ) {
-            cal.set(Calendar.DAY_OF_MONTH,i);
-            myEventList.add(new Event(titles[i % titles.length], "test description", "test host", cal.getTime(), cal.getTime(), cal.getTime(), "category", "test URL", "test owner", "Seymour Centre"));
-        }
+            }
+        });
 
-        myEventsAdapter.notifyDataSetChanged();
     }
     private void prepareHostedEvents() {
-        /*
-            Adding a few events for testing
 
-        */
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR,2018);
-        cal.set(Calendar.MONTH,12);
+        eventServices.getHostedEvents(new AppCallback<List<Event>>() {
+            @Override
+            public void call(final List<Event> events) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        hostedEventsList.addAll(events);
+                        hostedEventsAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
 
-        String[] titles = { "Lunchtime Basketball", "Pickup Soccer"};
+            @Override
+            public void call() {
 
-        for(int i = 0 ; i < 10; i++ ) {
-            cal.set(Calendar.DAY_OF_MONTH,i);
-            hostedEventsList.add(new Event(titles[i % titles.length], "test description", "test host", cal.getTime(), cal.getTime(), cal.getTime(), "category", "test URL", "test owner", "Seymour Centre"));
-        }
-
-
-        hostedEventsAdapter.notifyDataSetChanged();
+            }
+        });
     }
     private void preparePastEvents() {
-        /*
-            Adding a few events for testing
 
-        */
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR,2018);
-        cal.set(Calendar.MONTH,12);
+        eventServices.getPastEvents(new AppCallback<List<Event>>() {
+            @Override
+            public void call(final List<Event> events) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        pastEventsList.addAll(events);
+                        pastEventsAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
 
-        String[] titles = { "Anime Meetup" };
+            @Override
+            public void call() {
 
-        for(int i = 0 ; i < 10; i++ ) {
-            cal.set(Calendar.DAY_OF_MONTH,i);
-            pastEventsList.add(new Event(titles[i % titles.length], "test description", "test host", cal.getTime(), cal.getTime(), cal.getTime(), "category", "test URL", "test owner", "Seymour Centre"));
-        }
+            }
+        });
 
-
-        pastEventsAdapter.notifyDataSetChanged();
     }
 
 
