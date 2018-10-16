@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -55,7 +56,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     private ProgressBar progressBar;
     private EditText editTextTitle, editTextDescription, editTextDate, editTextStartTime, editTextEndTime, editTextHost;
     private Spinner spinner;
-    private Button btnChooseImage, btnCreateEvent;
+    private Button btnChooseImage, fab;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database;
     private ImageView imageViewEventImage;
@@ -90,6 +91,9 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         editTextTitle = findViewById(R.id.editTextTitle);
         editTextDescription = findViewById(R.id.editTextDescription);
         editTextHost = findViewById(R.id.editTextHost);
@@ -115,7 +119,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         storageReference = storage.getReference();
 
         findViewById(R.id.btnChooseImage).setOnClickListener(this);
-        findViewById(R.id.btnCreateEvent).setOnClickListener(this);
+        findViewById(R.id.fab).setOnClickListener(this);
 
         findViewById(R.id.editTextStartTime).setOnClickListener(this);
         findViewById(R.id.editTextEndTime).setOnClickListener(this);
@@ -138,6 +142,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
         //populate all the old fields if editing a current event
         Intent eventIntent = getIntent();
         if(eventIntent != null && eventIntent.getStringExtra("Edit").equals("true")) {
+            getSupportActionBar().setTitle("Edit Event");
             isEdit = true;
             editEvent = (Event) eventIntent.getParcelableExtra("Event");
             editTextTitle.setText(editEvent.getTitle());
@@ -174,6 +179,8 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
             editTextEndTime.setText(new SimpleDateFormat("H:mma").format(editEvent.getEventEndTime()));
 
 
+        } else {
+            getSupportActionBar().setTitle("Create Event");
         }
 
 
@@ -444,7 +451,7 @@ public class CreateEventActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnCreateEvent:
+            case R.id.fab:
                 registerEvent();
                 break;
         }
