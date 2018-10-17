@@ -79,7 +79,7 @@ public class MyNewIntentService extends JobIntentService {
         builder.setShowWhen(true);
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
-       
+
 
 
         //to be able to launch your activity from the notification
