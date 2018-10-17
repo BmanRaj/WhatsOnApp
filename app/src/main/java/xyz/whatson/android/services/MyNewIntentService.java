@@ -13,6 +13,7 @@ import android.support.v4.app.JobIntentService;
 import android.support.v4.app.NotificationManagerCompat;
 
 import xyz.whatson.android.R;
+import xyz.whatson.android.activities.MyEventsActivity;
 import xyz.whatson.android.activities.detail.ViewEventActivity;
 
 //needs to be JobIntentService to allow it to run when app is in background or closed
@@ -68,16 +69,17 @@ public class MyNewIntentService extends JobIntentService {
 
 
 
-        Intent notifyIntent = new Intent(this, ViewEventActivity.class);  //double check this class thing
-        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 2, notifyIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+        Intent notifyIntent = new Intent(this, MyEventsActivity.class);  //open up "my events" feed
+
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        String eventTitle = notifyIntent.getStringExtra("EventTitle");
+        //String eventTitle = notifyIntent.getStringExtra("EventTitle");
         builder.setContentTitle("Whats On");
         builder.setContentText("You have an event starting in 15 minutes!");
         builder.setSmallIcon(R.mipmap.ic_launcher_round);
         builder.setShowWhen(true);
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
+
 
         //to be able to launch your activity from the notification
         builder.setContentIntent(pendingIntent);
