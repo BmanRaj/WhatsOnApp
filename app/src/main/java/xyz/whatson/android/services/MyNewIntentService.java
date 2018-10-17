@@ -72,13 +72,14 @@ public class MyNewIntentService extends JobIntentService {
         Intent notifyIntent = new Intent(this, MyEventsActivity.class);  //open up "my events" feed
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        //String eventTitle = notifyIntent.getStringExtra("EventTitle");
-        builder.setContentTitle("Whats On");
-        builder.setContentText("You have an event starting in 15 minutes!");
-        builder.setSmallIcon(R.mipmap.ic_launcher_round);
+        builder.setContentTitle("You have an event starting in 15 minutes!");
+        builder.setContentText("Click to see your events feed");
+
+        builder.setSmallIcon(R.drawable.ic_notif_icon);
         builder.setShowWhen(true);
         builder.setContentIntent(pendingIntent);
         builder.setAutoCancel(true);
+       
 
 
         //to be able to launch your activity from the notification
