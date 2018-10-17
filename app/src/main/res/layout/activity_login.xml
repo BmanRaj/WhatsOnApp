@@ -48,16 +48,20 @@
 
             <Button
                 android:id="@+id/btnLogin"
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login" />
+                android:text="Login"
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/btnGoToRegister"
-                android:layout_toEndOf="@id/btnLogin"
-                android:layout_width="150dp"
+                android:layout_width="224dp"
                 android:layout_height="wrap_content"
-                android:text="Sign Up" />
+                android:layout_below="@id/btnLogin"
+                android:layout_marginStart="-223dp"
+                android:layout_toEndOf="@id/btnLogin"
+                android:text="Sign Up"
+                android:textAlignment="center" />
 
         </RelativeLayout>
 

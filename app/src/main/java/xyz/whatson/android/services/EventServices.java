@@ -225,6 +225,38 @@ public class EventServices {
             }
         });
     }
+    public void getRecommendedEvents(final AppCallback callback)
+    {
+        FirebaseDatabase.getInstance().getReference("Users").child(mAuth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final List<String> categories = new ArrayList<>();
+                for(DataSnapshot key: dataSnapshot.getChildren()){
+                    String category = key.getKey().substring(0, 1).toUpperCase() + key.getKey().substring(1);
+                    if(key.getValue().equals("true")){
+                        categories.add(category);
+                    }
+                }
+                try{
+                    new AsyncTask<Void, Void, Void>() {
+                        @Override
+                        protected Void doInBackground(Void... voids){
+                            List<Event> starredEvents = eventDao.getRecommendedEvents(categories, new Date().getTime());
+                            callback.call(starredEvents);
+                            return null;
+                        }
+                    }.execute().get();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     public void getHostedEvents(final AppCallback callback)
     {

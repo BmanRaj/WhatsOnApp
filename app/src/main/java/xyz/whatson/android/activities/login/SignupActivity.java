@@ -95,6 +95,13 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
+        boolean retVal = email.endsWith("uni.sydney.edu.au");
+        if (retVal == false) {
+            editTextEmail.setError("You must enter a valid University of Sydney email");
+            editTextEmail.requestFocus();
+            return;
+        }
+
         if (password.isEmpty()) {
             editTextPassword.setError(getString(R.string.input_error_password));
             editTextPassword.requestFocus();

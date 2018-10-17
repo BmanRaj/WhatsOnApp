@@ -25,6 +25,9 @@ public interface EventDao {
     @Query("SELECT * FROM events WHERE key in (:keys) AND eventStartTime >= (:now)")
     List<Event> getStarredEvents(List<String> keys, long now);
 
+    @Query("SELECT * FROM events WHERE category in (:categories) AND eventStartTime >= (:now)")
+    List<Event> getRecommendedEvents(List<String> categories, long now);
+
     @Query("SELECT * FROM events WHERE owner = (:uid) AND eventStartTime >= (:now)")
     List<Event> getHostedEvents(String uid, long now);
 

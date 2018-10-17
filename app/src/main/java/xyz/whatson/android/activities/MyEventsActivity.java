@@ -3,6 +3,7 @@ package xyz.whatson.android.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,11 +42,15 @@ public class MyEventsActivity extends AppCompatActivity
     private EventAdapter myEventsAdapter;
     private List<Event> myEventList;
 
+    private EventAdapter recommendedEventsAdapter;
+    private List<Event> recommendedEventsList;
+
     private EventAdapter pastEventsAdapter;
     private List<Event> pastEventsList;
 
     private EventAdapter hostedEventsAdapter;
     private List<Event> hostedEventsList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,7 @@ public class MyEventsActivity extends AppCompatActivity
         eventServices = EventServices.getInstance();
 
         initMyEventsList();
+        initRecommendedEventsList();
         initHostedEventsList();
         initPastEventsList();
     }
@@ -126,6 +132,45 @@ public class MyEventsActivity extends AppCompatActivity
         eventsRecyclerView.setAdapter(myEventsAdapter);
         prepareMyEvents();
     }
+    private void initRecommendedEventsList(){
+        /*
+            Initialises the events list layout.
+        */
+        RecyclerView eventsRecyclerView = (RecyclerView) findViewById(R.id.recycler_view4);
+        //// creates a linear list
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        eventsRecyclerView.setLayoutManager(mLayoutManager);
+        eventsRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //// Maps clicking on an event card, to opening the event detail view in the view event activity.
+        eventsRecyclerView.addOnItemTouchListener(new RecyclerOnClickListener(getApplicationContext(), eventsRecyclerView, new RecyclerOnClickListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Event event  = recommendedEventsList.get(position);
+                // Go to View Event Page
+                Intent intent = new Intent(getApplicationContext(), ViewEventActivity.class);
+                intent.putExtra("event", event);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+
+        /*
+            Populate events lists
+
+
+         */
+        // Create data source and populate events feed with data
+        recommendedEventsList = new ArrayList<>();
+        recommendedEventsAdapter = new EventAdapter(this, recommendedEventsList);
+        eventsRecyclerView.setAdapter(recommendedEventsAdapter);
+        prepareRecommendedEvents();
+    }
     private void initHostedEventsList(){
         /*
             Initialises the events list layout.
@@ -164,6 +209,7 @@ public class MyEventsActivity extends AppCompatActivity
         hostedEventsAdapter = new EventAdapter(this, hostedEventsList);
         eventsRecyclerView.setAdapter(hostedEventsAdapter);
         prepareHostedEvents();
+
     }
     private void initPastEventsList(){
         /*
@@ -213,6 +259,7 @@ public class MyEventsActivity extends AppCompatActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        myEventList.clear();
                         myEventList.addAll(events);
                         myEventsAdapter.notifyDataSetChanged();
                     }
@@ -226,6 +273,27 @@ public class MyEventsActivity extends AppCompatActivity
         });
 
     }
+    private void prepareRecommendedEvents() {
+
+        eventServices.getRecommendedEvents(new AppCallback<List<Event>>() {
+            @Override
+            public void call(final List<Event> events) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recommendedEventsList.clear();
+                        recommendedEventsList.addAll(events);
+                        recommendedEventsAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+
+            @Override
+            public void call() {
+
+            }
+        });
+    }
     private void prepareHostedEvents() {
 
         eventServices.getHostedEvents(new AppCallback<List<Event>>() {
@@ -234,6 +302,7 @@ public class MyEventsActivity extends AppCompatActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        hostedEventsList.clear();
                         hostedEventsList.addAll(events);
                         hostedEventsAdapter.notifyDataSetChanged();
                     }
@@ -254,6 +323,7 @@ public class MyEventsActivity extends AppCompatActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        pastEventsList.clear();
                         pastEventsList.addAll(events);
                         pastEventsAdapter.notifyDataSetChanged();
                     }

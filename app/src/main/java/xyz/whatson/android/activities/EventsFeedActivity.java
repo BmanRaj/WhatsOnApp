@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -45,6 +46,9 @@ public class EventsFeedActivity extends AppCompatActivity
     private EventAdapter adapter;
     private List<Event> eventList;
     private EventServices eventServices;
+
+    SwipeRefreshLayout pullToRefresh;
+    boolean refreshing = false;
 
 
     @Override
@@ -142,6 +146,18 @@ public class EventsFeedActivity extends AppCompatActivity
         recyclerView.setAdapter(adapter);
         prepareEvents();
 
+        /**
+         * Add Pull to Refresh
+         */
+        pullToRefresh = findViewById(R.id.pullToRefreshEvents);
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshing = true;
+                prepareEvents();
+            }
+        });
+
     }
 
 
@@ -180,8 +196,13 @@ public class EventsFeedActivity extends AppCompatActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        eventList.clear();
                         eventList.addAll(events);
                         adapter.notifyDataSetChanged();
+                        if(refreshing){
+                            pullToRefresh.setRefreshing(false);
+                            refreshing = false;
+                        }
                     }
                 });
             }
@@ -191,13 +212,6 @@ public class EventsFeedActivity extends AppCompatActivity
 
             }
         });
-
-//        String[] titles = {"Anime Meetup", "Lunchtime Basketball", "Lunchtime Games", "Pickup Soccer"};
-
-//        for(int i = 0 ; i < 10; i++ ) {
-//            cal.set(Calendar.DAY_OF_MONTH,i);
-//            eventList.add(new Event(titles[i % titles.length], "test description", "test host", cal.getTime(),cal.getTime(), cal.getTime(), "Seymour Centre", "test URL", "test owner"));
-//        }
 
     }
 
