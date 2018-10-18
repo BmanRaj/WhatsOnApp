@@ -2,75 +2,60 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-        android:title="Profile"
-        android:key="pref_key_storage_settings">
+        android:title="Choose your category preferences"
+        android:key="pref_key_storage_settings"
+        android:summary="Pick your category preferences: ">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="example_switch"
-        android:summary="@string/pref_description_social_recommendations"
-        android:title="@string/pref_title_social_recommendations" />
 
-    <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-    <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-    <EditTextPreference
-        android:capitalize="words"
-        android:defaultValue="@string/pref_default_display_name"
-        android:inputType="textCapWords"
-        android:key="example_text"
-        android:maxLines="1"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
-        android:title="@string/pref_title_display_name" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:id="@+id/artCat"
+        android:title="Art"
+        android:key="artKey" />
 
-    <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-         dismiss it. -->
-    <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
-    <ListPreference
-        android:defaultValue="-1"
-        android:entries="@array/pref_example_list_titles"
-        android:entryValues="@array/pref_example_list_values"
-        android:key="example_list"
-        android:negativeButtonText="@null"
-        android:positiveButtonText="@null"
-        android:title="@string/pref_title_add_friends_to_messages" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:id="@+id/sportsCat"
+        android:title="Sports"
+        android:key="sportsKey" />
 
-    </PreferenceCategory>
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:id="@+id/scienceCat"
+        android:title="Science"
+        android:key="scienceKey" />
 
-    <PreferenceCategory
-        android:title="App Settings"
-        android:key="pref_key_storage_settings">
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:id="@+id/techCat"
+        android:title="Tech"
+        android:key="techKey" />
 
-        <SwitchPreference
-            android:defaultValue="true"
-            android:key="example_switch"
-            android:summary="@string/pref_description_social_recommendations"
-            android:title="@string/pref_title_social_recommendations" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:id="@+id/cultureCat"
+        android:title="Culture"
+        android:key="cultureKey" />
 
-        <!-- NOTE: EditTextPreference accepts EditText attributes. -->
-        <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
-        <EditTextPreference
-            android:capitalize="words"
-            android:defaultValue="@string/pref_default_display_name"
-            android:inputType="textCapWords"
-            android:key="example_text"
-            android:maxLines="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/pref_title_display_name" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:id="@+id/musicCat"
+        android:title="Music"
+        android:key="musicKey" />
 
-        <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
-             dismiss it. -->
-        <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
-        <ListPreference
-            android:defaultValue="-1"
-            android:entries="@array/pref_example_list_titles"
-            android:entryValues="@array/pref_example_list_values"
-            android:key="example_list"
-            android:negativeButtonText="@null"
-            android:positiveButtonText="@null"
-            android:title="@string/pref_title_add_friends_to_messages" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:id="@+id/educationCat"
+        android:title="Education"
+        android:key="educationKey" />
+
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:id="@+id/recreationCat"
+        android:title="Recreation"
+        android:key="recreationKey" />
 
     </PreferenceCategory>
 
 </PreferenceScreen>
+
