@@ -87,7 +87,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Log.d("FailureURL", event.getTitle());
+                // Log.d("FailureURL", downloadUrl);
                 //if no image is found then set the tile to be blank
                 holder.image.setImageResource(R.drawable.blank);
             }

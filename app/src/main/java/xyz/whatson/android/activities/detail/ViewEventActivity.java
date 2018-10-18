@@ -215,7 +215,7 @@ public class ViewEventActivity extends AppCompatActivity {
         } else {
             event = (Event) eventIntent.getParcelableExtra("event");
             setTitle(event.getTitle());
-            mEventOrganiserNameText.setText("by " + event.getHost());
+            mEventOrganiserNameText.setText("by \n" + event.getHost());
 
             mStartDateText.setText(new SimpleDateFormat("d MMM").format(event.getEventDate()));
             mStartTimeText.setText(new SimpleDateFormat("H:mma").format(event.getEventStartTime()));
