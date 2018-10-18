@@ -27,6 +27,7 @@ import java.util.List;
 
 import xyz.whatson.android.R;
 import xyz.whatson.android.model.Event;
+import xyz.whatson.android.services.CacheStore;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder> {
 
@@ -35,6 +36,9 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
     private FirebaseStorage storage;
     private StorageReference storageReference;
     String downloadUrl;
+    Bitmap myBitmap;
+    CacheStore cacheStore = new CacheStore();
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView title, startDate;
@@ -67,6 +71,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         holder.title.setText(event.getTitle());
         holder.startDate.setText(new SimpleDateFormat("d\nMMM").format(event.getEventDate()));
 
+        
+
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
         StorageReference ref = storageReference.child("images/" + event.getImageURL());
@@ -82,10 +88,13 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Log.d("FailureURL", event.getTitle());
+                //if no image is found then set the tile to be blank
                 holder.image.setImageResource(R.drawable.blank);
             }
         });
     }
+
+    //this class adapted from https://stackoverflow.com/questions/3090650/android-loading-an-image-from-the-web-with-asynctask
     public class DownloadImageTask extends AsyncTask<ImageView, Void, Bitmap> {
 
         ImageView imageView = null;
@@ -104,15 +113,22 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.MyViewHolder
         private Bitmap download_Image(String src) {
             try {
                 URL url = new URL(src);
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setDoInput(true);
-                connection.connect();
-                InputStream input = connection.getInputStream();
-                Bitmap myBitmap = BitmapFactory.decodeStream(input);
-                //myBitmap.createScaledBitmap(myBitmap, 20, 20, false);
-                Log.d("urlsrc = ", src);
-                // Bitmap myBitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                return myBitmap;
+
+                if (cacheStore.getCacheFile(src) == null ) {
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream input = connection.getInputStream();
+                    myBitmap = BitmapFactory.decodeStream(input);
+                    cacheStore.saveCacheFile(src, myBitmap);
+                    //myBitmap.createScaledBitmap(myBitmap, 20, 20, false);
+                    Log.d("urlsrc = ", src);
+                    return myBitmap;
+                } else {
+                    myBitmap = cacheStore.getCacheFile(src);
+                    // Bitmap myBitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    return myBitmap;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.d("getbitmapfailed", "getBitmapFromURL: failed");
