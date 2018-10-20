@@ -75,16 +75,18 @@
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/btnSignUp"
         android:layout_marginBottom="249dp"
+
         android:text="Art" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+
         android:layout_alignStart="@+id/btnSignUp"
-        android:layout_marginTop="258dp"
-        android:text="Choose Interests:" />
+
+        android:text="Choose Interests:"
+        android:layout_above="@id/checkBoxArt"/>
 
     <CheckBox
         android:id="@+id/checkBoxCulture"

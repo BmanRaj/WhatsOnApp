@@ -59,7 +59,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
-            CheckBoxPreference checkBoxArt, checkBoxCulture, checkBoxSports, checkBoxMusic, checkBoxTech, checkBoxScience, checkBoxRecreation, checkBoxEducation;
+            final CheckBoxPreference checkBoxArt, checkBoxCulture, checkBoxSports, checkBoxMusic, checkBoxTech, checkBoxScience, checkBoxRecreation, checkBoxEducation;
             boolean artPref, culturePref, sportsPref, musicPref, techPref, sciencePref, recreationPref, educationPref;
 
 
@@ -86,6 +86,68 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             final DatabaseReference ref = databaseReference.child("Users").child(userID);
 
 
+            //tick the boxes for user's preferences
+            ref.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    for(DataSnapshot key: dataSnapshot.getChildren()){
+                        String category = key.getKey().substring(0, 1).toUpperCase() + key.getKey().substring(1);
+                        if(key.getValue().equals("true")){
+                            if(category.equals("Art")) {
+                                checkBoxArt.setChecked(true);
+                            } else if (category.equals("Sports")){
+                                checkBoxSports.setChecked(true);
+                            } else if (category.equals("Culture")) {
+                                checkBoxCulture.setChecked(true);
+                            } else if (category.equals("Education")) {
+                                checkBoxEducation.setChecked(true);
+                            } else if (category.equals("Music")) {
+                                checkBoxMusic.setChecked(true);
+                            } else if (category.equals("Recreation")) {
+                                checkBoxRecreation.setChecked(true);
+                            } else if (category.equals("Science")) {
+                                checkBoxScience.setChecked(true);
+                            } else if (category.equals("Tech")) {
+                                checkBoxTech.setChecked(true);
+                            }
+                        } else if(key.getValue().equals("false")){
+                            if(category.equals("Art")) {
+                                checkBoxArt.setChecked(false);
+                            } else if (category.equals("Sports")){
+                                checkBoxSports.setChecked(false);
+                            } else if (category.equals("Culture")) {
+                                checkBoxCulture.setChecked(false);
+                            } else if (category.equals("Education")) {
+                                checkBoxEducation.setChecked(false);
+                            } else if (category.equals("Music")) {
+                                checkBoxMusic.setChecked(false);
+                            } else if (category.equals("Recreation")) {
+                                checkBoxRecreation.setChecked(false);
+                            } else if (category.equals("Science")) {
+                                checkBoxScience.setChecked(false);
+                            } else if (category.equals("Tech")) {
+                                checkBoxTech.setChecked(false);
+                            }
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
+
+
+
+
+
+
             //SETTING LISTENERS TO UPDATE EACH PREFERENCE IF TICKED
             //adapted from https://stackoverflow.com/questions/28721192/android-one-clicklistener-for-many-checkboxpreference
 
@@ -103,7 +165,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
             };
             checkBoxSports.setOnPreferenceClickListener(sportsListener);
-
 
             Preference.OnPreferenceClickListener artListener = new Preference.OnPreferenceClickListener() {
                 @Override
