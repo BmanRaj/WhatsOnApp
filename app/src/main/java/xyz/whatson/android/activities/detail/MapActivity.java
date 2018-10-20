@@ -1,3 +1,5 @@
+//adapted from https://www.youtube.com/watch?v=OknMZUnTyds&list=PLgCYzUzKIBE-vInwQhGSdnbyJ62nixHCt
+
 package xyz.whatson.android.activities.detail;
 
 import android.Manifest;

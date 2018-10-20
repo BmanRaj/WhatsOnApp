@@ -32,7 +32,7 @@ public class MyNewIntentService extends JobIntentService {
     }
 
 
-    //this taken from
+    //this function adapted from
     // https://developer.android.com/training/notify-user/channels#java
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
@@ -44,8 +44,7 @@ public class MyNewIntentService extends JobIntentService {
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
+
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
